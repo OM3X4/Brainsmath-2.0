@@ -2,7 +2,7 @@
 
 **BrainsMath** is a web-based platform for learning and mastering mental math — think **Monkeytype**, but for arithmetic. Designed to improve speed and accuracy through guided tricks and targeted practice, BrainsMath helps users develop razor-sharp mental math skills in a gamified, visually clean experience.
 
-![BrainsMath Screenshot](./screenshot.png) <!-- Optional image -->
+<!-- ![BrainsMath Screenshot](./screenshot.png)  Optional image -->
 
 ## 🚀 Tech Stack
 
