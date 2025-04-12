@@ -16,3 +16,17 @@ export interface signupType {
     passwordver: string
 }
 
+export type QuestionType = 'all' | 'add' | 'sub' | 'multiply' | 'root' | 'squares';
+
+export interface Question {
+    type: QuestionType;
+    question: string;
+    answer: string;
+}
+
+export interface BarSettingsType {
+    type: string[],
+    number: number,
+    isTime: boolean
+}
+

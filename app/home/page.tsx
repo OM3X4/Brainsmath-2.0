@@ -9,93 +9,49 @@ import { CgMathMinus } from "react-icons/cg";
 import { BiMath } from "react-icons/bi";
 import React, { useState, useEffect } from 'react'
 import { useRouter } from "next/navigation";
+import { MdOutlineRefresh } from "react-icons/md";
+import { generateRandomQuestions } from "../utils/questionGen";
+import { Question , BarSettingsType } from "../types/types";
 
-const questions = [
-    {
-        question: "66²",
-        answer: "4356"
-    },
-    {
-        question: "√3364",
-        answer: "58"
-    },
-    {
-        question: "930 + 920",
-        answer: "1850"
-    },
-    {
-        question: "4 - 2",
-        answer: "2"
-    },
-    {
-        question: "16 - 2",
-        answer: "14"
-    },
-    {
-        question: "99 - 2",
-        answer: "97"
-    },
-    {
-        question: "66²",
-        answer: "4296"
-    },
-    {
-        question: "√3364",
-        answer: "58"
-    },
-    {
-        question: "930 + 920",
-        answer: "1750"
-    },
-    {
-        question: "4 - 2",
-        answer: "2"
-    },
-    {
-        question: "16 - 2",
-        answer: "14"
-    },
-    {
-        question: "99 - 2",
-        answer: "97"
-    },
-    {
-        question: "66²",
-        answer: "4296"
-    },
-    {
-        question: "√3364",
-        answer: "58"
-    },
-    {
-        question: "930 + 920",
-        answer: "1750"
-    },
-    {
-        question: "4 - 2",
-        answer: "2"
-    },
-    {
-        question: "16 - 2",
-        answer: "14"
-    },
-    {
-        question: "99 - 2",
-        answer: "97"
-    },
-]
 
 function Home() {
     const router = useRouter()
+    const [questions , setQuestions] = useState<Question[]>([])
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [tracker, setTracker] = useState(new Array(18).fill(false));
     const [answers, setAnswers] = useState(new Array(18).fill(""));
     const [isAnimating, setIsAnimating] = useState(false);
 
+    const [TextFade , setTextFade] = useState<boolean>(true)
+
+    const [settings , setSettings] = useState<BarSettingsType>({type:["all"] , number:10 , isTime:false})
+
+
+    const generateQuestions = () : void => {
+        setQuestions(generateRandomQuestions(['all'] , 18));
+    }
+
+    const changeSettingsType = (type: string): void => {
+        setSettings(prev => {
+            const newTypes = prev.type.includes(type)
+                ? prev.type.filter(t => t !== type) // Remove type if it's already included
+                : [...prev.type, type]; // Add type if it's not included
+
+            return { ...prev, type: newTypes };
+        });
+
+        generateQuestions();
+    };
 
     useEffect(() => {
-        console.log(tracker)
-    })
+        generateQuestions()
+    } , [])
+
+    useEffect(() => {
+        setTimeout(() => {
+            setTextFade(false)
+        } , 300)
+    } , [TextFade])
 
 
     function handleKeyPress(e: KeyboardEvent) {
@@ -113,6 +69,8 @@ function Home() {
             })
         } else if (e.key === " ") {
             if (isAnimating) return; // Prevent multiple transitions
+
+            if(!answers[currentQuestion]) return // Prevent empty answers
 
             if (currentQuestion < questions.length - 1) {
                 setTracker(prev => {
@@ -143,38 +101,51 @@ function Home() {
         return () => {
             window.removeEventListener("keydown", handleKeyPress)
         }
-    })
+    } , [handleKeyPress])
 
     return (
         <>
             {/* settings bar */}
             <div className='flex gap-3 text-sm text-gray bg-dark w-fit py-3 px-6 rounded-lg mx-auto mt-5'>
                 <ul className='flex items-center justify-center gap-6'>
-                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white"><BiMath />all</li>
-                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white"><CgMathPlus />add</li>
-                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white"><CgMathMinus />subtract</li>
-                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white"><FaTimes />multiply</li>
-                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white"><TbCircleNumber2 />square</li>
-                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white"><FaSquareRootAlt />root</li>
+                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white font-semibold"
+                    onClick={e =>}
+                    ><BiMath />all</li>
+                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white font-semibold"
+                    onClick={e =>}
+                    ><CgMathPlus />add</li>
+                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white font-semibold"
+                    onClick={e =>}
+                    ><CgMathMinus />subtract</li>
+                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white font-semibold"
+                    onClick={e =>}
+                    ><FaTimes />multiply</li>
+                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white font-semibold"
+                    onClick={e =>}
+                    ><TbCircleNumber2 />square</li>
+                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white font-semibold"
+                    onClick={e =>}
+                    ><FaSquareRootAlt />root</li>
                 </ul>
                 <span className='bg-background w-1 h-7 rounded-full'></span>
                 <ul className='flex items-center justify-center gap-6'>
-                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white"><AiFillClockCircle />time</li>
-                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white"><BsQuestionLg />questions</li>
+                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white font-semibold"><AiFillClockCircle />time</li>
+                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white font-semibold"><BsQuestionLg />questions</li>
                 </ul>
                 <span className='bg-background w-1 h-7 rounded-full'></span>
 
                 <ul className='flex items-center justify-center gap-6'>
-                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white">5</li>
-                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white">10</li>
-                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white">25</li>
-                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white">50</li>
-                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white">custom</li>
+                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white font-semibold">5</li>
+                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white font-semibold">10</li>
+                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white font-semibold">25</li>
+                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white font-semibold">50</li>
+                    <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-white font-semibold">custom</li>
                 </ul>
             </div>
 
             {/* Carousel container */}
-            <div className="relative h-[calc(100vh-300px)] w-full overflow-hidden flex items-center justify-center">
+            <div className="relative h-[calc(100vh-300px)] w-full overflow-hidden flex items-center justify-center"
+            style={{opacity: TextFade ? 0 : 1}}>
                 <div
                     className="flex absolute transition-transform duration-400 ease-out"
                     style={{
@@ -211,15 +182,26 @@ function Home() {
                                     <h1 className={`${distance === 0 ? "text-primary text-8xl" : "text-gray text-5xl"} font-bold mb-10 text-center`}>
                                         {question.question}
                                     </h1>
-                                    <div className={`${distance === 0 ? "text-white text-9xl" : "text-green-400 text-3xl"} text-center mb-5 font-bold`}>
+                                    {/* Nested Ternary Operator one to determine is question is right or wrong(inner) and the outter to determine if the question is the current one */}
+                                    <div className={`${distance === 0 ? "text-white text-9xl" : tracker[index] ? "text-green-400 text-4xl" : "text-red-500 text-4xl"} text-center mb-5 font-bold`}>
                                         {answers[index]}
                                     </div>
-                                    <div className={`w-full h-1 ${distance === 0 ? "bg-primary" : "bg-gray"}`}></div>
+                                    <div className={`h-1 ${distance === 0 ? "bg-primary w-2/3" : "bg-gray w-1/3"}`}></div>
                                 </div>
                             </div>
                         );
                     })}
                 </div>
+            </div>
+            <div className="text-white text-5xl flex items-center justify-center ">
+                <MdOutlineRefresh className="cursor-pointer hover:text-primary"
+                onClick={e => {
+                    setCurrentQuestion(0);
+                    setTracker(new Array(questions.length).fill(false));
+                    setAnswers(new Array(questions.length).fill(""));
+                    setTextFade(true);
+                    generateQuestions();
+                }}/>
             </div>
         </>
     )

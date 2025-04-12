@@ -27,6 +27,10 @@
   @apply transition-all ease-in-out
 }
 
+:root {
+  --font-ubuntu: 'Ubuntu', sans-serif;
+}
+
 .fade-enter {
   opacity: 0;
 }
