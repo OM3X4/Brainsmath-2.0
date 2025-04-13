@@ -4,8 +4,8 @@ export function generateRandomQuestions(types: QuestionType[] = ['all'], numQues
     const getRandomInt = (min: number, max: number): number => Math.floor(Math.random() * (max - min + 1)) + min;
 
     const generateAddQuestion = (): Question => {
-        const a = getRandomInt(1, 10000);
-        const b = getRandomInt(1, 10000);
+        const a = getRandomInt(1, 100);
+        const b = getRandomInt(1, 100);
         return {
             type: 'add',
             question: `${a} + ${b}`,
@@ -14,7 +14,7 @@ export function generateRandomQuestions(types: QuestionType[] = ['all'], numQues
     };
 
     const generateSubQuestion = (): Question => {
-        const a = getRandomInt(1, 10000);
+        const a = getRandomInt(1, 100);
         const b = getRandomInt(1, a);
         return {
             type: 'sub',
@@ -24,8 +24,8 @@ export function generateRandomQuestions(types: QuestionType[] = ['all'], numQues
     };
 
     const generateMulQuestion = (): Question => {
-        const a = getRandomInt(1, 100);
-        const b = getRandomInt(1, 100);
+        const a = getRandomInt(1, 10);
+        const b = getRandomInt(1, 10);
         return {
             type: 'multiply',
             question: `${a} * ${b}`,
@@ -34,7 +34,7 @@ export function generateRandomQuestions(types: QuestionType[] = ['all'], numQues
     };
 
     const generateRootQuestion = (): Question => {
-        const a = getRandomInt(1, 100);
+        const a = getRandomInt(1, 10);
         const perfectSquare = a * a;
         return {
             type: 'root',
@@ -44,7 +44,7 @@ export function generateRandomQuestions(types: QuestionType[] = ['all'], numQues
     };
 
     const generateSquareQuestion = (): Question => {
-        const a = getRandomInt(1, 100);
+        const a = getRandomInt(1, 10);
         return {
             type: 'squares',
             question: `${a}²`,

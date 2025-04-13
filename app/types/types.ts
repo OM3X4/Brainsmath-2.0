@@ -25,8 +25,17 @@ export interface Question {
 }
 
 export interface BarSettingsType {
-    type: string[],
+    type: QuestionType[],
     number: number,
     isTime: boolean
+}
+
+export interface ResultData {
+    quantity: number;
+    time: number; //ms
+    type: QuestionType[];
+    correct: number;
+    difficulty: number;
+    mode: "Time" | "Questions";
 }
 
