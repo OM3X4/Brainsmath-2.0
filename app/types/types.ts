@@ -27,12 +27,13 @@ export interface Question {
 export interface BarSettingsType {
     type: QuestionType[],
     number: number,
-    isTime: boolean
+    isTime: boolean,
+    difficulty: number
 }
 
 export interface ResultData {
     quantity: number;
-    time: number; //ms
+    time: number; // ms
     type: QuestionType[];
     correct: number;
     difficulty: number;
