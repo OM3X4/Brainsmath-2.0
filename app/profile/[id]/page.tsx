@@ -1,11 +1,14 @@
 'use client'
 // app/profile/[id]/page.tsx
+import { useParams } from "next/navigation";
 
-interface ProfilePageProps {
-    params: { id: string };
-}
 
-export default function ProfilePage({ params }: ProfilePageProps) {
+export default function ProfilePage() {
+
+    const params = useParams();
+
+
+
     return (
         <section className="min-w-screen min-h-screen flex items-center justify- flex-col gap-10">
             <div className="w-[80%] mx-auto px-10 py-5 bg-dark rounded-2xl">
