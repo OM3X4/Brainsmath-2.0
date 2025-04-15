@@ -6,7 +6,7 @@ interface ProfilePageProps {
 
 export default function ProfilePage({ params }: ProfilePageProps) {
     return (
-        <section>
+        <section className="min-w-screen min-h-screen flex items-center justify- flex-col gap-10">
             <div className="w-[80%] mx-auto px-10 py-5 bg-dark rounded-2xl">
                 <div className="flex items-center gap-5">
                     {/* img */}
@@ -35,6 +35,32 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                             <h1 className="text-sm text-gray ">Tests Completed</h1>
                             <h1 className="text-reverse text-4xl font-medium">50,927</h1>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div className="w-[80%] mx-auto px-10 py-7 bg-dark rounded-2xl">
+                <div className="flex items-center justify-around text-reverse gap-5" >
+                    <h1 className="font-medium">All Time Difficulty 5 Leaderboard</h1>
+                    <div>
+                        <p className="text-gray">15s</p>
+                        <h1 className="text-3xl font-bold">Not Qualified</h1>
+                    </div>
+                    <div>
+                        <p className="text-gray">60s</p>
+                        <h1 className="text-3xl font-bold">Not Qualified</h1>
+                    </div>
+                </div>
+            </div>
+            <div className="w-[80%] mx-auto px-10 py-7 bg-dark rounded-2xl">
+                <div className="flex items-center justify-around text-reverse gap-5" >
+                    <h1 className="font-medium">All Time Difficulty 5 Leaderboard</h1>
+                    <div>
+                        <p className="text-gray">15s</p>
+                        <h1 className="text-3xl font-bold">Not Qualified</h1>
+                    </div>
+                    <div>
+                        <p className="text-gray">60s</p>
+                        <h1 className="text-3xl font-bold">Not Qualified</h1>
                     </div>
                 </div>
             </div>
