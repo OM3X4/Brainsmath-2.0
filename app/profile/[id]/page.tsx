@@ -1,3 +1,4 @@
+'use client'
 // app/profile/[id]/page.tsx
 
 interface ProfilePageProps {
