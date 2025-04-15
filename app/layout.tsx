@@ -6,6 +6,7 @@ import Navbar from "./Components/Navbar";
 import { FontProvider } from "./context/FontContext";
 import { Roboto, JetBrains_Mono , IBM_Plex_Sans , Ubuntu} from 'next/font/google';
 import Footer from "./Components/Footer";
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -64,7 +65,10 @@ export default function RootLayout({
       ${geistSans.variable}
       ${geistMono.variable}
     `}>
+        {/* Google Analytics script for loading gtag.js */}
+
       <Head>
+
         <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
@@ -88,6 +92,7 @@ export default function RootLayout({
         className={` antialiased overflow-x-hidden bg-background w-screen h-screen`}
         style={{ fontFamily: 'var(--font-ubuntu)' }}
       >
+        <GoogleAnalytics gaId="G-S42CJ0GTXJ" />
         <FontProvider>
           <div className="w-screen min-h-screen">
             <Navbar />
