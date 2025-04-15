@@ -12,14 +12,14 @@ import { BiMath } from "react-icons/bi";
 import React, { useState, useEffect, useRef } from 'react'
 import { useRouter } from "next/navigation";
 import { MdOutlineRefresh } from "react-icons/md";
-import { generateRandomQuestions } from "../utils/questionGen";
-import { Question, BarSettingsType, ResultData, QuestionType } from "../types/types";
-import calculateQPM from "../utils/qpm";
+import { generateRandomQuestions } from "./utils/questionGen";
+import { Question, BarSettingsType, ResultData, QuestionType } from "./types/types";
+import calculateQPM from "./utils/qpm";
 
 
 import { useStopwatch, useTimer } from "react-timer-hook";
 
-import { playRandomSound } from "../utils/useSoundPlayer";
+import { playRandomSound } from "./utils/useSoundPlayer";
 
 
 
