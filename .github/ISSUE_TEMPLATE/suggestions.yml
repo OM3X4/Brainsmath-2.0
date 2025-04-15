@@ -1,0 +1,52 @@
+name: 🌟 Suggest a Feature or Improvement
+description: Share your idea to improve BrainsMath
+title: "[SUGGESTION] "
+labels: ["enhancement"]
+body:
+  - type: input
+    id: title
+    attributes:
+      label: ✨ One-line summary
+      description: Give your idea a short, clear title.
+      placeholder: Add a streak counter for daily practice
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: 🤔 What problem does this solve?
+      description: Tell us what problem or need this idea addresses.
+      placeholder: Users might lose motivation without visible progress tracking.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 💡 Your proposed solution
+      description: Describe your idea in detail. How should it work?
+      placeholder: Show a streak counter on the homepage when a user practices two or more days in a row...
+    validations:
+      required: true
+
+  - type: textarea
+    id: details
+    attributes:
+      label: 🧠 Extra details or thoughts (Optional)
+      description: Anything else you want to add?
+      placeholder: e.g. This is similar to how Duolingo motivates daily learners.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 🔥 How important is this to you?
+      options:
+        - Nice to have
+        - Would be very helpful
+        - Must-have feature!
+      default: 0
+    validations:
+      required: false
