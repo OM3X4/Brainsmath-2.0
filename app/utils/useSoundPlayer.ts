@@ -17,7 +17,7 @@ const ClickSounds = [
 ]
 
 const wrongSounds = [
-    '/sounds/error_1.wav'
+    '/sounds/error_2.wav'
 ];
 
 export const playRandomSound = (type: 'correct' | 'wrong' | 'click') => {

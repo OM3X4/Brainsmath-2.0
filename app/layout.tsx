@@ -89,8 +89,10 @@ export default function RootLayout({
         style={{ fontFamily: 'var(--font-ubuntu)' }}
       >
         <FontProvider>
-          <Navbar />
-          {children}
+          <div className="w-screen min-h-screen">
+            <Navbar />
+            {children}
+          </div>
           <Footer />
         </FontProvider>
       </body>

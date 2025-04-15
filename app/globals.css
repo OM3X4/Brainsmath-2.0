@@ -10,20 +10,55 @@
   --color-gray: #565861;
   --color-error: #df4f4b;
   --color-text: #dcdee3;
+  --color-reverse: #ffffff;
 
   --animate-draw-slash: draw-slash 0.4s ease-out;
 
-  @keyframes draw-slash {
-    0% {
-      width: 0%;
-    }
-    100% {
-      width: 140%;
-    }
-  }
 }
 
+
+
 @layer base {
+
+  [data-theme="vscode"],
+  [data-theme="mint"],
+  [data-theme="onedark"],
+  [data-theme="watermelon"],
+  [data-theme="carbon"],
+  [data-theme="futurefunk"],
+  [data-theme="laser"],
+  [data-theme="superuser"],
+  [data-theme="nord"],
+  [data-theme="github"],
+  [data-theme="metaverse"],
+  [data-theme="nightrunner"],
+  [data-theme="grape"],
+  [data-theme="metropolis"],
+  [data-theme="darkmagicgirl"],
+  [data-theme="terminal"],
+  [data-theme="joker"],
+  [data-theme="reddragon"],
+  [data-theme="incognito"],
+  [data-theme="fire"],
+  [data-theme="matrix"],
+  [data-theme="serikadark"],
+  [data-theme="trackday"],
+  [data-theme="sweden"],
+  [data-theme="8008"] {
+    --color-reverse: #ffffff;
+  }
+
+  /* Light Themes (Reverse = Black) */
+  [data-theme="dino"],
+  [data-theme="tangerine"],
+  [data-theme="lildragon"],
+  [data-theme="darling"],
+  [data-theme="serika"],
+  [data-theme="mexican"],
+  [data-theme="honey"],
+  [data-theme="menthol"] {
+    --color-reverse: #000000;
+  }
 
   [data-theme="vscode"] {
     --color-primary: #007acc;
@@ -32,6 +67,7 @@
     --color-gray: #4d4d4d;
     --color-error: #f44747;
     --color-text: #4d4d4d;
+
   }
 
   [data-theme="mint"] {
@@ -50,6 +86,7 @@
     --color-gray: #d5d5d5;
     --color-error: #ff5f5f;
     --color-text: #1d221f;
+    --color-reverse: #000000;
   }
 
   [data-theme="tangerine"] {
@@ -59,6 +96,7 @@
     --color-gray: #ff9562;
     --color-error: #7fb500;
     --color-text: #3d1705;
+    --color-reverse: #000000;
   }
 
   [data-theme="lildragon"] {
@@ -68,6 +106,7 @@
     --color-gray: #a28db8;
     --color-error: #f794ca;
     --color-text: #212b43;
+    --color-reverse: #000000;
   }
 
   [data-theme="darling"] {
@@ -77,6 +116,7 @@
     --color-gray: #a30000;
     --color-error: #2e7dde;
     --color-text: #ffffff;
+    --color-reverse: #000000;
   }
 
   [data-theme="serika"] {
@@ -86,6 +126,7 @@
     --color-gray: #aaaeb3;
     --color-error: #da3333;
     --color-text: #323437;
+    --color-reverse: #000000;
   }
 
   [data-theme="mexican"] {
@@ -95,6 +136,7 @@
     --color-gray: #333;
     --color-error: #da3333;
     --color-text: #eee;
+    --color-reverse: #000000;
   }
 
   [data-theme="honey"] {
@@ -104,6 +146,7 @@
     --color-gray: #a66b00;
     --color-error: #df3333;
     --color-text: #f3eecb;
+    --color-reverse: #000000;
   }
 
   [data-theme="menthol"] {
@@ -113,6 +156,7 @@
     --color-gray: #186544;
     --color-error: #e03c3c;
     --color-text: #ffffff;
+    --color-reverse: #000000;
   }
 
   [data-theme="trackday"] {

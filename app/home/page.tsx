@@ -85,9 +85,7 @@ function Home() {
 
 
 
-    useEffect(() => {
-        document.body.style.fontFamily = "var(--font-ibm)";
-    }, []);
+
 
     // reset the timer and test
     const resetTest = () => {
@@ -177,6 +175,7 @@ function Home() {
             setAnswers(prev => {
                 const newAnswers = [...prev];
                 newAnswers[currentQuestion] = newAnswers[currentQuestion] + e.key;
+                console.log(e.key , newAnswers)
                 return newAnswers
             })
         } else if (e.key === "Backspace") {
@@ -189,12 +188,14 @@ function Home() {
         } else if (e.key === " ") {
             if (isAnimating) return; // Prevent multiple transitions
 
+            console.log(answers)
             if (!answers[currentQuestion]) return // Prevent empty answers
 
             if(answers[currentQuestion] != questions[currentQuestion].answer){
                 playRandomSound("wrong");
+            }else{
+                playRandomSound("correct")
             }
-            playRandomSound("correct")
 
             if (currentQuestion < questions.length - 1) {
                 setTracker(prev => {
@@ -235,7 +236,7 @@ function Home() {
         }else if(e.key != "Control" && e.key != "Alt" && e.key != "Shift"){
             playRandomSound("wrong");
         }
-    }, [currentQuestion])
+    }, [currentQuestion , answers])
 
     useEffect(() => {
         window.addEventListener("keydown", handleKeyPress)
@@ -353,7 +354,7 @@ function Home() {
                                     transform: `translateX(calc(50% - ${currentQuestion * 440}px - 200px))`
                                 }}
                             >
-                                {questions.slice(Math.max(0 , currentQuestion - 3) , Math.min(questions.length , currentQuestion + 3)).map((question, index) => {
+                                {questions.map((question, index) => {
                                     // Determine distance from current question
                                     const distance = Math.abs(index - currentQuestion);
                                     let opacityClass = "opacity-10";
@@ -380,7 +381,7 @@ function Home() {
                                             className={`w-[400px] mx-5 flex flex-col items-center justify-center transition-all duration-400 ease-in-out origin-center flex-shrink-0 flex-grow-0 ${opacityClass} ${scaleClass} ${zIndexClass}`}
                                         >
                                             <div className="flex flex-col items-center w-full">
-                                                <h1 className={`${distance === 0 ? "text-primary text-8xl" : "text-gray text-5xl"} font-bold mb-10 text-center`}>
+                                                <h1 className={`${distance === 0 ? "text-primary text-8xl" : "text-gray text-5xl"} font-bold mb-10 text-center `}>
                                                     {question.question}
                                                 </h1>
                                                 {/* Nested Ternary Operator one to determine is question is right or wrong(inner) and the outter to determine if the question is the current one */}
