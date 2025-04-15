@@ -20,8 +20,8 @@ function Navbar() {
         <>
             <nav className="flex justify-between items-center px-30 py-8">
                 <div className="flex justify-center items-center gap-10">
-                    <Link href={'/home'} prefetch={true}><h1 className="text-primary font-medium text-4xl cursor-pointer">brainsmath</h1></Link>
-                    <Link href={'/home'} prefetch={true}><PiMathOperationsBold className="text-3xl cursor-pointer text-gray hover:text-primary" /></Link>
+                    <Link href={'/'} prefetch={true}><h1 className="text-primary font-medium text-4xl cursor-pointer">brainsmath</h1></Link>
+                    <Link href={'/'} prefetch={true}><PiMathOperationsBold className="text-3xl cursor-pointer text-gray hover:text-primary" /></Link>
                     <Link href={"/leaderboard"}><TbCrown className="text-3xl cursor-pointer text-gray  hover:text-primary" /></Link>
                     <Link href={"/settings"}><FaGear className="text-xl cursor-pointer text-gray  hover:text-primary" /></Link>
 
