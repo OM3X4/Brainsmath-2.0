@@ -35,7 +35,7 @@ function Home() {
 
     const [TextFade, setTextFade] = useState<boolean>(true) // is text fading
 
-    const [settings, setSettings] = useState<BarSettingsType>({ type: ["all"], number: 10, isTime: false, difficulty: 1 }) // bar settings state
+    const [settings, setSettings] = useState<BarSettingsType>({ type: ["all"], number: 10, isTime: false, difficulty: 0 }) // bar settings state
 
     const [isResult, setIsResult] = useState<boolean>(false) // is result page
 
@@ -162,7 +162,7 @@ function Home() {
 
     const handleDifficultyChange = (): void => {
         if (settings.difficulty == 5) {
-            setSettings(prev => ({ ...prev, difficulty: 1 }))
+            setSettings(prev => ({ ...prev, difficulty: 0 }))
         } else {
             setSettings(prev => ({ ...prev, difficulty: prev.difficulty + 1 }))
         }
@@ -335,7 +335,7 @@ function Home() {
                                     </div>
                                     <div className="text-xl w-fit mx-auto mb-5 flex items-center justify-center gap-1 text-gray font-semibold hover:text-text cursor-pointer"
                                         onClick={handleDifficultyChange}>
-                                        <PiGaugeBold /> difficulty: {settings.difficulty}
+                                        <PiGaugeBold /> difficulty: {settings.difficulty == 0 ? "mixed"  : settings.difficulty}
                                     </div>
                                 </>
 

@@ -3,7 +3,7 @@ import { Question, QuestionType } from "../types/types";
 export function generateRandomQuestions(types: QuestionType[] = ['all'], numQuestions: number = 10, difficulty: number): Question[] {
     const getRandomInt = (min: number, max: number): number => Math.floor(Math.random() * (max - min + 1)) + min;
 
-    const difficulties = [
+    let difficulties = [
         { // Level 1 – Warmup
             addMin: 1,
             addMax: 100,
@@ -64,7 +64,24 @@ export function generateRandomQuestions(types: QuestionType[] = ['all'], numQues
             squareMin: 50,
             squareMax: 100,   // 50²–100²
         }
-    ];
+    ]
+
+    if (difficulty === 0) {
+        difficulties = [{
+            addMin: 0,
+            addMax: difficulties[4].addMax,
+            subMin: 0,
+            subMax: difficulties[4].subMax,
+            mulMin: 0,
+            mulMax: difficulties[4].mulMax,
+            rootMin: 0,
+            rootMax: difficulties[4].rootMax,
+            squareMin: 0,
+            squareMax: difficulties[4].squareMax,
+        }];
+    }
+
+    difficulty = 1
 
 
 
