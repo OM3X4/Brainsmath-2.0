@@ -1,0 +1,11 @@
+POST https://brainsmathserver-production.up.railway.app/api/token/
+Content-Type: application/json
+
+{
+    "username": "omar",
+    "password": "omar"
+}
+###
+GET https://brainsmathserver-production.up.railway.app/user/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1MDk3MDY2LCJpYXQiOjE3NDUwOTY3NjYsImp0aSI6IjhlZDg3Nzk5NDM4MTQ2ZGY4M2EyMTcxMDNjOTIyMmFiIiwidXNlcl9pZCI6M30.tUYT9ZOZhh9SoZ0k_QryXVqOjL0tNXB640jgDbzbCq8

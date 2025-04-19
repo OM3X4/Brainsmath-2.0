@@ -7,6 +7,9 @@ import { FontProvider } from "./context/FontContext";
 import { Roboto, JetBrains_Mono , IBM_Plex_Sans , Ubuntu} from 'next/font/google';
 import Footer from "./Components/Footer";
 import { GoogleAnalytics } from '@next/third-parties/google'
+import QueryProvider from "./QueryProvider";
+import ProfileFetcher from "./ProfileFetcher";
+
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -34,7 +37,6 @@ const ubuntu = Ubuntu({
     weight: ["300", "400" , "500" , "700"],
     subsets: ["latin"]
 })
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -93,13 +95,16 @@ export default function RootLayout({
         style={{ fontFamily: 'var(--font-ubuntu)' }}
       >
         <GoogleAnalytics gaId="G-S42CJ0GTXJ" />
-        <FontProvider>
-          <div className="w-screen min-h-screen">
-            <Navbar />
-            {children}
-          </div>
-          <Footer />
-        </FontProvider>
+        <QueryProvider>
+          <ProfileFetcher />
+          <FontProvider>
+            <div className="w-screen min-h-screen">
+              <Navbar />
+              {children}
+            </div>
+            <Footer />
+          </FontProvider>
+        </QueryProvider>
       </body>
     </html>
   );

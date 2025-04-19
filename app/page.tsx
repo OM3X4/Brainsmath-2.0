@@ -1,5 +1,5 @@
 'use client'
-import { FaTerminal } from "react-icons/fa";
+import fetchProfile from './fetchingFns/FetchUserData';
 import { AiFillClockCircle } from "react-icons/ai";
 import { BsQuestionLg } from "react-icons/bs";
 import { CgMathPlus } from "react-icons/cg";
@@ -15,7 +15,10 @@ import { MdOutlineRefresh } from "react-icons/md";
 import { generateRandomQuestions } from "./utils/questionGen";
 import { Question, BarSettingsType, ResultData, QuestionType } from "./types/types";
 import calculateQPM from "./utils/qpm";
+import Loading from './loading';
 
+
+import { useQuery } from "@tanstack/react-query";
 
 import { useStopwatch, useTimer } from "react-timer-hook";
 
@@ -39,7 +42,7 @@ function Home() {
 
     const [isResult, setIsResult] = useState<boolean>(false) // is result page
 
-
+    const { data: profile, isLoading } = useQuery({ queryKey: ['userData']  , queryFn: fetchProfile });
 
     // result page data
     const [resultData, setResultData] = useState<ResultData>({ quantity: 60, time: 30000, type: ["all"], correct: 30, difficulty: 1, mode: "Questions" })
@@ -89,6 +92,7 @@ function Home() {
 
     // reset the timer and test
     const resetTest = () => {
+        if(isLoading) return
         if (settings.isTime) {
             startNewTimer(settings.number);
         } else {
@@ -245,6 +249,10 @@ function Home() {
             window.removeEventListener("keydown", handleKeyPress)
         }
     }, [handleKeyPress])
+
+
+    if (isLoading) return <Loading />;
+
 
     return (
         <>
