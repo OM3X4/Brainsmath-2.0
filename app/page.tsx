@@ -3,7 +3,7 @@ import fetchProfile from './fetchingFns/FetchUserData';
 import { MdOutlineRefresh } from "react-icons/md";
 
 
-
+import useKeyPressHandler from './hooks/useKeyPressHandler';
 import React, { useState, useEffect, useRef } from 'react'
 import { generateRandomQuestions } from "./utils/questionGen";
 import { Question, BarSettingsType, ResultData, QuestionType } from "./types/types";
@@ -35,7 +35,7 @@ function Home() {
 
     const [isResult, setIsResult] = useState<boolean>(false) // is result page
 
-    const { data: profile, isLoading } = useQuery({ queryKey: ['userData']  , queryFn: fetchProfile });
+    const { data: profile, isLoading } = useQuery({ queryKey: ['userData'], queryFn: fetchProfile });
 
     // result page data
     const [resultData, setResultData] = useState<ResultData>({ quantity: 60, time: 30000, type: ["all"], correct: 30, difficulty: 1, mode: "Questions" })
@@ -79,10 +79,6 @@ function Home() {
         }
     };
 
-
-
-
-
     // reset the timer and test
     const resetTest = () => {
         if (settings.isTime) {
@@ -100,7 +96,7 @@ function Home() {
 
     // generate new questions on settings change
     useEffect(() => {
-        if(isLoading) return;
+        if (isLoading) return;
         resetTest();
     }, [settings])
 
@@ -111,7 +107,7 @@ function Home() {
         if (settings.isTime && !isResult && !isLoading) {
             startNewTimer(settings.number);
         }
-    }, [settings, isResult , !isLoading]);
+    }, [settings, isResult, !isLoading]);
 
 
 
@@ -139,84 +135,23 @@ function Home() {
     }, [TextFade])
 
 
-
-
-    const handleKeyPress = React.useCallback((e: KeyboardEvent) => {
-        if (["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(e.key)) {
-            playRandomSound("click");
-            setAnswers(prev => {
-                const newAnswers = [...prev];
-                newAnswers[currentQuestion] = newAnswers[currentQuestion] + e.key;
-                console.log(e.key , newAnswers)
-                return newAnswers
-            })
-        } else if (e.key === "Backspace") {
-            setAnswers(prev => {
-                const newAnswers = [...prev];
-                newAnswers[currentQuestion] = newAnswers[currentQuestion].slice(0, -1);
-                return newAnswers
-            })
-
-        } else if (e.key === " ") {
-            if (isAnimating) return; // Prevent multiple transitions
-
-            console.log(answers)
-            if (!answers[currentQuestion]) return // Prevent empty answers
-
-            if(answers[currentQuestion] != questions[currentQuestion].answer){
-                playRandomSound("wrong");
-            }else{
-                playRandomSound("correct")
-            }
-
-            if (currentQuestion < questions.length - 1) {
-                setTracker(prev => {
-                    const newTracker = [...prev];
-                    newTracker[currentQuestion] = questions[currentQuestion].answer === answers[currentQuestion];
-                    return newTracker
-                })
-
-
-                // Change question after a brief delay to allow animation to start
-                setTimeout(() => {
-                    setCurrentQuestion(prev => prev + 1);
-
-                    // Reset animation flag after transition completes
-                    setTimeout(() => {
-                        setIsAnimating(false);
-                    }, 300); // Match this with CSS transition duration
-                }, 50);
-            } else {
-                if (!settings.isTime) {
-                    setResultData(prev => ({
-                        ...prev,
-                        type: settings.type,
-                        quantity: questions.length,
-                        time: stopTimer.totalSeconds * 1000,
-                        correct: tracker.filter(t => t).length,
-                        difficulty: settings.difficulty
-                    }))
-                }
-                setTextFade(true);
-                resetTest();
-                setIsResult(true);
-
-            }
-        } else if (e.key == "Tab") {
-            e.preventDefault()
-            resetTest();
-        }else if(e.key != "Control" && e.key != "Alt" && e.key != "Shift"){
-            playRandomSound("wrong");
-        }
-    }, [currentQuestion , answers])
-
-    useEffect(() => {
-        window.addEventListener("keydown", handleKeyPress)
-
-        return () => {
-            window.removeEventListener("keydown", handleKeyPress)
-        }
-    }, [handleKeyPress])
+    useKeyPressHandler({
+        currentQuestion,
+        setCurrentQuestion,
+        questions,
+        answers,
+        setAnswers,
+        tracker,
+        setTracker,
+        settings,
+        stopTimer,
+        setResultData,
+        resetTest,
+        setIsResult,
+        setTextFade,
+        isAnimating,
+        setIsAnimating,
+    });
 
 
     if (isLoading) return <Loading />;
