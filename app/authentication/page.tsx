@@ -5,20 +5,27 @@ import { BiLogIn } from "react-icons/bi";
 import { IoMdPersonAdd } from "react-icons/io";
 import React , { useState , useEffect} from 'react'
 import { passwordShowType , loginType , signupType } from "../types/types";
+import { useLogin } from "../hooks/useLogin";
 
 
 function Authentication() {
 
+    const { mutate: login , isSuccess } = useLogin();
 
   const [passwordShow, setPasswordShow] = useState<passwordShowType>({signup:false , signupver:false , login:false})
   const [loginData , setLoginData] = useState<loginType>({username:"" , password:""})
   const [signupData , setSignupData] = useState<signupType>({username:"" , email:"" , password:"" , passwordver:""})
 
-
+  async function handleLogin(){
+    console.log(loginData)
+    const result = login(loginData)
+    console.log(result)
+  }
 
   return (
     <>
         <div className=' w-screen flex mt-20 justify-center gap-50 bg-background'>
+          {/* Register */}
             <div className="flex flex-col gap-5 text-white">
                 <div className="flex items-center justify- gap-5 text-primary mb-3">
                     <IoMdPersonAdd className="text-3xl"/>
@@ -44,6 +51,7 @@ function Authentication() {
                 </div>
                 <button className="bg-primary py-2 px-4 rounded-lg cursor-pointer font-bold text-2xl hover:bg-white hover:text-black">Sign Up</button>
             </div>
+            {/* Login */}
             <div className="flex flex-col gap-5 text-white">
               <div className="flex items-center justify- gap-5 text-primary mb-3">
                 <BiLogIn className="text-3xl"/>
@@ -58,7 +66,8 @@ function Authentication() {
                 <FaEyeSlash className="absolute top-1/2 -translate-y-1/2 right-5 text-gray" onClick={e => setPasswordShow(prev => ({...prev , login:false}))}/> :
                 <FaEye className="absolute top-1/2 -translate-y-1/2 right-5 text-gray" onClick={e => setPasswordShow(prev => ({...prev , login:true}))}/>}
               </div>
-              <button className="bg-primary py-2 px-4 rounded-lg cursor-pointer font-bold text-2xl hover:bg-white hover:text-black">Sign In</button>
+              <button className="bg-primary py-2 px-4 rounded-lg cursor-pointer font-bold text-2xl hover:bg-white hover:text-black"
+              onClick={handleLogin}>Sign In</button>
 
             </div>
         </div>

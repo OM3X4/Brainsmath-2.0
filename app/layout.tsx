@@ -8,7 +8,7 @@ import { Roboto, JetBrains_Mono , IBM_Plex_Sans , Ubuntu} from 'next/font/google
 import Footer from "./Components/Footer";
 import { GoogleAnalytics } from '@next/third-parties/google'
 import QueryProvider from "./QueryProvider";
-import ProfileFetcher from "./ProfileFetcher";
+import ProfileFetcher from "./hooks/useProfileFetcher";
 
 
 const roboto = Roboto({

@@ -15,7 +15,6 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useStopwatch, useTimer } from "react-timer-hook";
 
-import { playRandomSound } from "./utils/useSoundPlayer";
 
 
 
@@ -31,14 +30,15 @@ function Home() {
 
     const [TextFade, setTextFade] = useState<boolean>(true) // is text fading
 
-    const [settings, setSettings] = useState<BarSettingsType>({ type: ["all"], number: 10, isTime: false, difficulty: 1 }) // bar settings state
+    const [settings, setSettings] = useState<BarSettingsType>({ type: ["all"], number: 5, isTime: false, difficulty: 1 }) // bar settings state
 
     const [isResult, setIsResult] = useState<boolean>(false) // is result page
 
+    // const isLoading = false
     const { data: profile, isLoading } = useQuery({ queryKey: ['userData'], queryFn: fetchProfile });
 
     // result page data
-    const [resultData, setResultData] = useState<ResultData>({ quantity: 60, time: 30000, type: ["all"], correct: 30, difficulty: 1, mode: "Questions" })
+    const [resultData, setResultData] = useState<ResultData>({ quantity: 60, time: 30000, type: ["all"], correct: 30, difficulty: 1, mode: "questions" })
 
     const { seconds, minutes, isRunning, start, pause, resume, restart } = useTimer({
         expiryTimestamp: new Date(),
@@ -48,7 +48,7 @@ function Home() {
                 type: settings.type,
                 difficulty: settings.difficulty,
                 time: settings.number * 1000, // time in ms
-                mode: "Time",
+                mode: "time",
                 quantity: answers.filter(a => a.length).length,
                 correct: tracker.filter(a => a).length
             });
@@ -100,16 +100,12 @@ function Home() {
         resetTest();
     }, [settings])
 
-
-
     // set Start Time
     useEffect(() => {
         if (settings.isTime && !isResult && !isLoading) {
             startNewTimer(settings.number);
         }
     }, [settings, isResult, !isLoading]);
-
-
 
     const generateQuestions = (setting: BarSettingsType): void => {
         if (setting.isTime) {
@@ -122,7 +118,6 @@ function Home() {
             setQuestions(generateRandomQuestions(setting.type, setting.number, settings.difficulty));
         }
     }
-
 
     useEffect(() => {
         generateQuestions(settings)
@@ -152,6 +147,10 @@ function Home() {
         isAnimating,
         setIsAnimating,
     });
+
+    useEffect(() => {
+        console.log(profile);
+    }, [profile])
 
 
     if (isLoading) return <Loading />;

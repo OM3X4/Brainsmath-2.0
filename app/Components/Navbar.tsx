@@ -3,10 +3,13 @@ import { FaGear } from "react-icons/fa6"; import { TbCrown } from "react-icons/t
 import React , { useEffect } from 'react'
 import { PiMathOperationsBold } from "react-icons/pi";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import fetchProfile from "../fetchingFns/FetchUserData";
 
 
 function Navbar() {
 
+    const { data: userData } = useQuery({queryKey: ["userData"], queryFn: fetchProfile});
 
     useEffect(() => {
         const savedTheme = localStorage.getItem('theme');
@@ -26,10 +29,10 @@ function Navbar() {
                     <Link href={"/settings"}><FaGear className="text-xl cursor-pointer text-gray  hover:text-primary" /></Link>
 
                 </div>
-                <Link href={'/authentication'}>
+                <Link href={userData ? '/profile' : '/authentication'}>
                     <div className="flex items-center justify-center gap-3">
                         <div className="size-6 bg-primary rounded-full cursor-pointer"></div>
-                        <p className="text-gray hover:text-white  text-md cursor-pointer">User</p>
+                        <p className="text-gray hover:text-white  text-md cursor-pointer">{userData ? userData.username : "Sign In"}</p>
                     </div>
                 </Link>
             </nav>

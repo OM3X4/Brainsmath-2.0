@@ -28,7 +28,7 @@ export interface BarSettingsType {
     type: QuestionType[],
     number: number,
     isTime: boolean,
-    difficulty: number
+    difficulty: 0 | 1 | 2 | 3 | 4 | 5;
 }
 
 export interface ResultData {
@@ -36,7 +36,17 @@ export interface ResultData {
     time: number; // ms
     type: QuestionType[];
     correct: number;
-    difficulty: number;
-    mode: "Time" | "Questions";
+    difficulty: 0 | 1 | 2 | 3 | 4 | 5;
+    mode: "time" | "questions";
+}
+
+export interface TestSubmitType {
+    "qpm": number;
+    "raw": number;
+    "number": number;
+    "accuracy": number;
+    "time": number; // in ms
+    "difficulty": 0 | 1 | 2 | 3 | 4 | 5;
+    "mode": "time" | "questions";
 }
 

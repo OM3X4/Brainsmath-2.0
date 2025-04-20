@@ -22,10 +22,10 @@ interface SettingsBarProps {
 function SettingsBar({ settings, setSettings }: SettingsBarProps) {
 
     const handleDifficultyChange = (): void => {
-        if (settings.difficulty == 5) {
+        if (settings.difficulty <= 5) {
             setSettings(prev => ({ ...prev, difficulty: 0 }))
         } else {
-            setSettings(prev => ({ ...prev, difficulty: prev.difficulty + 1 }))
+            setSettings(prev => ({ ...prev, difficulty: prev.difficulty + 1 as 0 | 1 | 2 | 3 | 4 | 5 }))
         }
     }
 

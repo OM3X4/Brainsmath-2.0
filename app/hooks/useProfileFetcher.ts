@@ -1,6 +1,6 @@
 'use client'
 import { useQuery } from '@tanstack/react-query';
-import fetchProfile from './fetchingFns/FetchUserData';
+import fetchProfile from '../fetchingFns/FetchUserData';
 
 
 type Score = {
@@ -65,7 +65,8 @@ export default function ProfileFetcher() {
     useQuery<UserData>({
         queryKey: ["userData"],
         queryFn: fetchProfile,
-        staleTime: 60000 * 60
+        staleTime: 60000 * 60,
+        retry: 1
     })
 
     return null;

@@ -1,10 +1,15 @@
 'use client'
-import React from 'react'
+import React , { useEffect , useState } from 'react'
 import { MdOutlineRefresh } from "react-icons/md";
 import calculateQPM from '@/app/utils/qpm';
 import { PiGaugeBold } from "react-icons/pi";
-import { ResultData } from '@/app/types/types';
-import { BarSettingsType } from '@/app/types/types';
+import { ResultData , BarSettingsType , TestSubmitType } from '@/app/types/types';
+import { useSubmitTest } from '@/app/hooks/useSubmitTest';
+
+
+
+
+
 
 type ResultProps = {
     resultData: ResultData;
@@ -14,21 +19,46 @@ type ResultProps = {
 }
 
 function Result({ resultData , TextFade , settings , resetTest} : ResultProps) {
+
+
+    const { mutate: submitTest , isSuccess } = useSubmitTest();
+
+    useEffect(() => {
+        let hasSubmitted = false;
+        if(hasSubmitted) return;
+
+
+        const serializedTest: TestSubmitType = {
+            qpm: calculateQPM(resultData.correct, resultData.time),
+            raw: calculateQPM(resultData.quantity, resultData.time),
+            number: resultData.quantity,
+            accuracy: (resultData.correct / resultData.quantity) * 100,
+            time: resultData.time,
+            difficulty: resultData.difficulty,
+            mode: resultData.mode == 'time' ? "time" : "questions"
+        }
+        console.log(JSON.stringify(serializedTest))
+        hasSubmitted = true
+        submitTest(serializedTest);
+    }, [])
+
+
+
     return (
         <div className=" h-[calc(100vh-300px)] w-full overflow-hidden flex items-center justify-center flex-col"
             style={{ opacity: TextFade ? 0 : 1 }}>
             <div className="flex flex-wrap items-end  gap-20">
                 <div className="">
                     <p className="text-gray text-3xl">speed <span className="text-[8px]">(QPM × 3)</span></p>
-                    <h1 className="text-primary text-9xl font-bold">{(calculateQPM(resultData.correct, resultData.time) * 3).toFixed(0)}</h1>
+                    <h1 className="text-primary text-7xl font-bold">{(calculateQPM(resultData.correct, resultData.time) * 3).toFixed(0)}</h1>
                 </div>
                 <div className="">
                     <p className="text-gray text-3xl">acc</p>
-                    <h1 className="text-primary text-9xl font-bold">{((resultData.correct / resultData.quantity) * 100).toFixed(0)}%</h1>
+                    <h1 className="text-primary text-7xl font-bold">{((resultData.correct / resultData.quantity) * 100).toFixed(0)}%</h1>
                 </div>
                 <div className="">
                     <p className="text-gray text-3xl">raw</p>
-                    <h1 className="text-primary text-7xl font-bold">{(calculateQPM(resultData.quantity, resultData.time) * 3).toFixed(0)}</h1>
+                    <h1 className="text-primary text-xl font-bold">{(calculateQPM(resultData.quantity, resultData.time) * 3).toFixed(0)}</h1>
                 </div>
                 <div className="">
                     <h3 className="text-gray text-2xl">Test Type</h3>

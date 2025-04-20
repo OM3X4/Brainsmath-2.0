@@ -60,8 +60,8 @@ export default function useKeyPressHandler({
                         mode: "Questions"
                     });
                 }
-                setIsResult(true);
                 resetTest();
+                setIsResult(true);
             }
         } else if (e.key === "Tab") {
             e.preventDefault();
