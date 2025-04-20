@@ -92,7 +92,6 @@ function Home() {
 
     // reset the timer and test
     const resetTest = () => {
-        if(isLoading) return
         if (settings.isTime) {
             startNewTimer(settings.number);
         } else {
@@ -108,6 +107,7 @@ function Home() {
 
     // generate new questions on settings change
     useEffect(() => {
+        if(isLoading) return;
         resetTest();
     }, [settings])
 
@@ -115,10 +115,10 @@ function Home() {
 
     // set Start Time
     useEffect(() => {
-        if (settings.isTime && !isResult && isRunning) {
+        if (settings.isTime && !isResult && !isLoading) {
             startNewTimer(settings.number);
         }
-    }, [settings, isResult]);
+    }, [settings, isResult , !isLoading]);
 
 
 
