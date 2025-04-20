@@ -9,8 +9,8 @@ import { TbCircleNumber2 } from "react-icons/tb";
 import { AiFillClockCircle } from "react-icons/ai";
 import { BsQuestionLg } from "react-icons/bs";
 import React from 'react'
-import { BarSettingsType } from '../types/types'
-import {QuestionType} from '../types/types'
+import { BarSettingsType } from '../../types/types'
+import {QuestionType} from '../../types/types'
 
 interface SettingsBarProps {
     settings: BarSettingsType,
