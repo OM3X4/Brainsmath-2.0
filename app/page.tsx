@@ -13,11 +13,12 @@ import { MdOutlineRefresh } from "react-icons/md";
 
 // components
 import { generateRandomQuestions } from "./utils/questionGen";
-import { Question, BarSettingsType, ResultData, QuestionType } from "./types/types";
+import { Question, BarSettingsType, ResultData, QuestionType , TestSubmitType } from "./types/types";
 import fetchProfile from './fetchingFns/FetchUserData';
 import calculateQPM from "./utils/qpm";
 import Loading from './loading';
 import { playRandomSound } from "./utils/useSoundPlayer";
+import { useSubmitTest } from "./hooks/useSubmitTest";
 
 // libraries
 import React, { useState, useEffect, useRef } from 'react'
@@ -45,6 +46,7 @@ function Home() {
     const [isResult, setIsResult] = useState<boolean>(false) // is result page
 
     const { data: profile, isLoading } = useQuery({ queryKey: ['userData']  , queryFn: fetchProfile });
+    const { mutate: submitTest , isSuccess } = useSubmitTest();
 
     // result page data
     const [resultData, setResultData] = useState<ResultData>({ quantity: 60, time: 30000, type: ["all"], correct: 30, difficulty: 1, mode: "questions" })
@@ -250,6 +252,26 @@ function Home() {
             window.removeEventListener("keydown", handleKeyPress)
         }
     }, [handleKeyPress])
+
+
+    useEffect(() => {
+        if (isResult) {
+        console.log("hi")
+
+
+        const serializedTest: TestSubmitType = {
+            qpm: calculateQPM(resultData.correct, resultData.time),
+            raw: calculateQPM(resultData.quantity, resultData.time),
+            number: resultData.quantity,
+            accuracy: (resultData.correct / resultData.quantity) * 100,
+            time: resultData.time,
+            difficulty: resultData.difficulty,
+            mode: resultData.mode == 'time' ? "time" : "questions"
+        }
+        console.log(JSON.stringify(serializedTest))
+        submitTest(serializedTest);
+        }
+    } , [isResult])
 
 
     if (isLoading) return <Loading />;

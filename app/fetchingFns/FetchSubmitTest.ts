@@ -2,6 +2,7 @@ import { TestSubmitType } from "../types/types";
 import FetchRefreshToken from "./FetchRefreshToken";
 
 export default async function fetchSubmitTest(data: TestSubmitType){
+    console.log("submitting test")
     if(!localStorage.getItem("access_token")) {console.log("no token");return;}
 
 

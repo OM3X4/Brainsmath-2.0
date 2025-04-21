@@ -1,7 +1,7 @@
 import FetchRefreshToken from "./FetchRefreshToken";
 export default async function fetchProfile() {
 
-    if(!localStorage.getItem("access_token")) {console.log("no token");return "no token";}
+    if(!localStorage.getItem("access_token")) {console.log("no token");}
 
 
     const accessToken = localStorage.getItem("access_token");

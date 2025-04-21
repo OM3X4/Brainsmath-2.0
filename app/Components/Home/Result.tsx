@@ -21,26 +21,24 @@ type ResultProps = {
 function Result({ resultData , TextFade , settings , resetTest} : ResultProps) {
 
 
-    const { mutate: submitTest , isSuccess } = useSubmitTest();
+    // const { mutate: submitTest , isSuccess } = useSubmitTest();
 
-    useEffect(() => {
-        let hasSubmitted = false;
-        if(hasSubmitted) return;
+    // useEffect(() => {
+    //     console.log("hi")
 
 
-        const serializedTest: TestSubmitType = {
-            qpm: calculateQPM(resultData.correct, resultData.time),
-            raw: calculateQPM(resultData.quantity, resultData.time),
-            number: resultData.quantity,
-            accuracy: (resultData.correct / resultData.quantity) * 100,
-            time: resultData.time,
-            difficulty: resultData.difficulty,
-            mode: resultData.mode == 'time' ? "time" : "questions"
-        }
-        console.log(JSON.stringify(serializedTest))
-        hasSubmitted = true
-        submitTest(serializedTest);
-    }, [])
+    //     const serializedTest: TestSubmitType = {
+    //         qpm: calculateQPM(resultData.correct, resultData.time),
+    //         raw: calculateQPM(resultData.quantity, resultData.time),
+    //         number: resultData.quantity,
+    //         accuracy: (resultData.correct / resultData.quantity) * 100,
+    //         time: resultData.time,
+    //         difficulty: resultData.difficulty,
+    //         mode: resultData.mode == 'time' ? "time" : "questions"
+    //     }
+    //     console.log(JSON.stringify(serializedTest))
+    //     submitTest(serializedTest);
+    // }, [])
 
 
 

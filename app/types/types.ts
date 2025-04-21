@@ -50,3 +50,10 @@ export interface TestSubmitType {
     "mode": "time" | "questions";
 }
 
+export type ResultProps = {
+    resultData: ResultData;
+    TextFade: boolean;
+    settings: BarSettingsType;
+    resetTest: () => void;
+}
+
