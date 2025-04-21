@@ -1,25 +1,33 @@
+import FetchRefreshToken from "./FetchRefreshToken";
 export default async function fetchProfile() {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("access_token")}`
-            // "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1MTA2MjA0LCJpYXQiOjE3NDUwOTkwMDQsImp0aSI6Ijg5YmNkMjE3Mzg3YzQyZmZhMzQ0ZmVjNTRmMmRkNzRiIiwidXNlcl9pZCI6M30.SqX6sQA8RXb0SGNw6WIb3Jj7UGO24OVgaAzaiFQIX00`
-        }
-    })
 
-    if(!response.ok){
-        const refresher = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/token/refresh/`, {
-            method: "POST",
+    if(!localStorage.getItem("access_token")) {console.log("no token");return "no token";}
+
+
+    const accessToken = localStorage.getItem("access_token");
+
+    async function getProfile(token: string) {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/`, {
+            method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({refresh: localStorage.getItem("refresh_token")})
-        })
+        });
+
+        return res;
     }
 
-    const data = await response.json()
 
+    let response = await getProfile(accessToken!);
+
+    if(localStorage.getItem("refresh_token")) FetchRefreshToken(localStorage.getItem("refresh_token")!);
+
+    if (!response.ok) {
+        throw new Error("Failed to fetch profile");
+    }
+
+    const data = await response.json();
     console.log(data)
-    return data
+    return data;
 }

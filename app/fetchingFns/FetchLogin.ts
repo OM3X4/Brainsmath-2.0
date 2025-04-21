@@ -7,5 +7,6 @@ export async function LoginFetch(data: { username: string; password: string; }) 
         body: JSON.stringify(data),
     })
     const result = await response.json();
+    console.log(result)
     return result;
 }

@@ -17,6 +17,7 @@ export const useLogin = () => {
             localStorage.setItem("refresh_token" , data.refresh);
             router.push("/");
         },
-        onError: (error) => {console.log("error" , error)}
+        onError: (error) => {console.log("error" , error)},
+        retry: 1
     })
 }

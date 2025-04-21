@@ -66,7 +66,7 @@ export default function ProfileFetcher() {
         queryKey: ["userData"],
         queryFn: fetchProfile,
         staleTime: 60000 * 60,
-        retry: 1
+        retry: 1,
     })
 
     return null;

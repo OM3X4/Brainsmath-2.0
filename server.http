@@ -9,3 +9,27 @@ Content-Type: application/json
 GET https://brainsmathserver-production.up.railway.app/user/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1MDk3MDY2LCJpYXQiOjE3NDUwOTY3NjYsImp0aSI6IjhlZDg3Nzk5NDM4MTQ2ZGY4M2EyMTcxMDNjOTIyMmFiIiwidXNlcl9pZCI6M30.tUYT9ZOZhh9SoZ0k_QryXVqOjL0tNXB640jgDbzbCq8
+
+
+###
+POST https://api.monkeytype.com/results
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:137.0) Gecko/20100101 Firefox/137.0
+Accept: application/json
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate, br, zstd
+Content-Type: application/json
+Content-Length: 1117
+Referer: https://monkeytype.com/
+x-client-version: 2025.04.18_21.53_a910ddab4
+Origin: https://monkeytype.com
+Sec-Fetch-Dest: empty
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: same-site
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjkwOTg1NzhjNDg4MWRjMDVlYmYxOWExNWJhMjJkOGZkMWFiMzRjOGEiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoib20zeDRlIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FBY0hUdGQ5RlNsMzBKbUZXTU84aGFWZl9HVWNqb3Z2TUF6bDFHVzhrUnJXU0E9czk2LWMiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vbW9ua2V5LXR5cGUiLCJhdWQiOiJtb25rZXktdHlwZSIsImF1dGhfdGltZSI6MTc0NTAxMjIyNSwidXNlcl9pZCI6IlVOS1R4OU1XZmlUSVRWRHFqMG9lbnJkRjQ0MjMiLCJzdWIiOiJVTktUeDlNV2ZpVElUVkRxajBvZW5yZEY0NDIzIiwiaWF0IjoxNzQ1MjI0OTY0LCJleHAiOjE3NDUyMjg1NjQsImVtYWlsIjoib21hcmVtYWQyNzIwMDhAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZ29vZ2xlLmNvbSI6WyIxMTExNDY4MjUzNDU3MjgyNDE0MzEiXSwiZW1haWwiOlsib21hcmVtYWQyNzIwMDhAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoiZ29vZ2xlLmNvbSJ9fQ.HjgpP08qr5r0kkm36PdrrXArSIXfyJAmgVNH_K-D9k-PeF0RuV8GFJKQlJOOl-wkHotz-94uyA7D7IdtWAdP_Btr4d_4jB8LqrBaVbfSU5_vaHOTyjAEhdz2rn9C6x3Pg4Q0Wn4YWCmvC_2is0fg7JDARuTkaVZBbuecHo6102BFU74fk0lophwXtq9FoHdfXKtp-TOwF3pe021g3qzVJf97bvflVl2GR3zB67EEZ64gmpsrDFHn3BewCwqJYEW6fH4_YM17IdCafr3sQrhBtwccSEM-fltQjWSQ0dnp2mp2PrP_pjJHQ96DhcZBEspk4_FSQaRLx84qBgrn7yTpPg
+Connection: keep-alive
+Priority: u=4
+TE: trailers
+
+{
+    {"result":{"wpm":108.14,"rawWpm":107.14,"charStats":[50,0,0,0],"charTotal":50,"acc":96.3,"mode":"words","mode2":"10","punctuation":false,"numbers":false,"lazyMode":false,"timestamp":1745226054954,"language":"english","restartCount":0,"incompleteTests":[],"incompleteTestSeconds":0,"difficulty":"normal","blindMode":false,"tags":[],"keySpacing":[128,70,1680,71,60,49,61,99,35,25,82,58,60,41,60,81,117,21,94,56,50,65,51,95,40,69,41,69,92,68,71,60,39,61,123,49,87,100,71,159,83,118,100,110,40,119,41,99,43,116,151,100],"keyDuration":[227,119,149,140,199,108,76,145,91,96,82,99,99,131,173,130,58,103,164,137,165,149,144,114,118,128,200,132,149,138,129,149,129,101,140,118,97,140,114,139,130,150,139,149,99,100,81,122,120,180,131,102,2],"keyOverlap":2330,"lastKeyToEnd":2,"startToFirstKey":70,"consistency":43.99,"wpmConsistency":27.43,"keyConsistency":0,"funbox":"none","bailedOut":false,"chartData":{"wpm":[0,0,64,96,98,107],"raw":[48,12,192,180,132,140],"err":[2,0,0,0,0,0]},"testDuration":5.6,"afkDuration":0,"stopOnLetter":false,"uid":"UNKTx9MWfiTITVDqj0oenrdF4423","hash":"515cf685dd701e0201a888bc28c0cda733b02468"}}
+}

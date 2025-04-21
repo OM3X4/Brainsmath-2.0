@@ -1,19 +1,29 @@
 'use client'
-import fetchProfile from './fetchingFns/FetchUserData';
+//icons
+import { AiFillClockCircle } from "react-icons/ai";
+import { BsQuestionLg } from "react-icons/bs";
+import { CgMathPlus } from "react-icons/cg";
+import { FaSquareRootAlt } from "react-icons/fa";
+import { TbCircleNumber2 } from "react-icons/tb";
+import { FaTimes } from "react-icons/fa";
+import { CgMathMinus } from "react-icons/cg";
+import { PiGaugeBold } from "react-icons/pi";
+import { BiMath } from "react-icons/bi";
 import { MdOutlineRefresh } from "react-icons/md";
 
-
-import useKeyPressHandler from './hooks/useKeyPressHandler';
-import React, { useState, useEffect, useRef } from 'react'
+// components
 import { generateRandomQuestions } from "./utils/questionGen";
 import { Question, BarSettingsType, ResultData, QuestionType } from "./types/types";
+import fetchProfile from './fetchingFns/FetchUserData';
+import calculateQPM from "./utils/qpm";
 import Loading from './loading';
-import SettingsBar from './Components/Home/SettingsBar';
-import Result from './Components/Home/Result';
+import { playRandomSound } from "./utils/useSoundPlayer";
 
+// libraries
+import React, { useState, useEffect, useRef } from 'react'
 import { useQuery } from "@tanstack/react-query";
-
 import { useStopwatch, useTimer } from "react-timer-hook";
+
 
 
 
@@ -30,12 +40,11 @@ function Home() {
 
     const [TextFade, setTextFade] = useState<boolean>(true) // is text fading
 
-    const [settings, setSettings] = useState<BarSettingsType>({ type: ["all"], number: 5, isTime: false, difficulty: 1 }) // bar settings state
+    const [settings, setSettings] = useState<BarSettingsType>({ type: ["all"], number: 10, isTime: false, difficulty: 0 }) // bar settings state
 
     const [isResult, setIsResult] = useState<boolean>(false) // is result page
 
-    // const isLoading = false
-    const { data: profile, isLoading } = useQuery({ queryKey: ['userData'], queryFn: fetchProfile });
+    const { data: profile, isLoading } = useQuery({ queryKey: ['userData']  , queryFn: fetchProfile });
 
     // result page data
     const [resultData, setResultData] = useState<ResultData>({ quantity: 60, time: 30000, type: ["all"], correct: 30, difficulty: 1, mode: "questions" })
@@ -79,6 +88,10 @@ function Home() {
         }
     };
 
+
+
+
+
     // reset the timer and test
     const resetTest = () => {
         if (settings.isTime) {
@@ -96,16 +109,21 @@ function Home() {
 
     // generate new questions on settings change
     useEffect(() => {
-        if (isLoading) return;
+        if(isLoading) return;
         resetTest();
-    }, [settings])
+    }, [settings , isLoading])
+
+
 
     // set Start Time
     useEffect(() => {
         if (settings.isTime && !isResult && !isLoading) {
             startNewTimer(settings.number);
         }
-    }, [settings, isResult, !isLoading]);
+    }, [settings, isResult , isLoading]);
+
+
+
 
     const generateQuestions = (setting: BarSettingsType): void => {
         if (setting.isTime) {
@@ -119,6 +137,26 @@ function Home() {
         }
     }
 
+    const changeSettingsType = (type: QuestionType): void => {
+        if (type === "all") {
+            setSettings(prev => ({ ...prev, type: ["all"] }))
+            return;
+        }
+        setSettings(prev => {
+            let newTypes = prev.type.includes(type)
+                ? prev.type.filter(t => t !== type) // Remove type if it's already included
+                : [...prev.type, type]; // Add type if it's not included
+            newTypes = newTypes.filter(t => t !== "all");
+
+            if (newTypes.length === 0) {
+                newTypes = ["all"];
+            }
+
+            return { ...prev, type: newTypes };
+        });
+
+    };
+
     useEffect(() => {
         generateQuestions(settings)
     }, [])
@@ -129,44 +167,190 @@ function Home() {
         }, 500)
     }, [TextFade])
 
+    const handleDifficultyChange = (): void => {
+        if (settings.difficulty == 5) {
+            setSettings(prev => ({ ...prev, difficulty: 0 }))
+        } else {
+            setSettings(prev => ({ ...prev, difficulty: prev.difficulty + 1 as 0 | 1 | 2 | 3 | 4 | 5 }))
+        }
+    }
 
-    useKeyPressHandler({
-        currentQuestion,
-        setCurrentQuestion,
-        questions,
-        answers,
-        setAnswers,
-        tracker,
-        setTracker,
-        settings,
-        stopTimer,
-        setResultData,
-        resetTest,
-        setIsResult,
-        setTextFade,
-        isAnimating,
-        setIsAnimating,
-    });
+
+    const handleKeyPress = React.useCallback((e: KeyboardEvent) => {
+        if (["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(e.key)) {
+            playRandomSound("click");
+            setAnswers(prev => {
+                const newAnswers = [...prev];
+                newAnswers[currentQuestion] = newAnswers[currentQuestion] + e.key;
+                return newAnswers
+            })
+        } else if (e.key === "Backspace") {
+            setAnswers(prev => {
+                const newAnswers = [...prev];
+                newAnswers[currentQuestion] = newAnswers[currentQuestion].slice(0, -1);
+                return newAnswers
+            })
+
+        } else if (e.key === " ") {
+            if (isAnimating) return; // Prevent multiple transitions
+
+            if (!answers[currentQuestion]) return // Prevent empty answers
+
+            if(answers[currentQuestion] != questions[currentQuestion].answer){
+                playRandomSound("wrong");
+            }else{
+                playRandomSound("correct")
+            }
+
+            if (currentQuestion < questions.length - 1) {
+                setTracker(prev => {
+                    const newTracker = [...prev];
+                    newTracker[currentQuestion] = questions[currentQuestion].answer === answers[currentQuestion];
+                    return newTracker
+                })
+
+
+                // Change question after a brief delay to allow animation to start
+                setTimeout(() => {
+                    setCurrentQuestion(prev => prev + 1);
+
+                    // Reset animation flag after transition completes
+                    setTimeout(() => {
+                        setIsAnimating(false);
+                    }, 300); // Match this with CSS transition duration
+                }, 50);
+            } else {
+                if (!settings.isTime) {
+                    setResultData(prev => ({
+                        ...prev,
+                        type: settings.type,
+                        quantity: questions.length,
+                        time: stopTimer.totalSeconds * 1000,
+                        correct: tracker.filter(t => t).length,
+                        difficulty: settings.difficulty
+                    }))
+                }
+                setTextFade(true);
+                resetTest();
+                setIsResult(true);
+
+            }
+        } else if (e.key == "Tab") {
+            e.preventDefault()
+            resetTest();
+        }else if(e.key != "Control" && e.key != "Alt" && e.key != "Shift"){
+            playRandomSound("wrong");
+        }
+    }, [currentQuestion , answers])
 
     useEffect(() => {
-        console.log(profile);
-    }, [profile])
+        window.addEventListener("keydown", handleKeyPress)
+
+        return () => {
+            window.removeEventListener("keydown", handleKeyPress)
+        }
+    }, [handleKeyPress])
 
 
     if (isLoading) return <Loading />;
+
+
+
 
 
     return (
         <>
             {
                 isResult ?
-                    <Result resultData={resultData} TextFade={TextFade} settings={settings} resetTest={resetTest} />
+
+                    <div className=" h-[calc(100vh-300px)] w-full overflow-hidden flex items-center justify-center flex-col"
+                        style={{ opacity: TextFade ? 0 : 1 }}>
+                        <div className="flex flex-wrap items-end  gap-20">
+                            <div className="">
+                                <p className="text-gray text-3xl">speed <span className="text-[8px]">(QPM × 3)</span></p>
+                                <h1 className="text-primary text-9xl font-bold">{(calculateQPM(resultData.correct, resultData.time) * 3).toFixed(0)}</h1>
+                            </div>
+                            <div className="">
+                                <p className="text-gray text-3xl">acc</p>
+                                <h1 className="text-primary text-9xl font-bold">{((resultData.correct / resultData.quantity) * 100).toFixed(0)}%</h1>
+                            </div>
+                            <div className="">
+                                <p className="text-gray text-3xl">raw</p>
+                                <h1 className="text-primary text-7xl font-bold">{(calculateQPM(resultData.quantity, resultData.time) * 3).toFixed(0)}</h1>
+                            </div>
+                            <div className="">
+                                <h3 className="text-gray text-2xl">Test Type</h3>
+                                <h6 className="text-primary font-semibold text-xl">{resultData.type.join(", ")}</h6>
+                                <h6 className="text-primary font-semibold text-xl">{settings.isTime ? resultData.time / 1000 : resultData.quantity} {resultData.mode}</h6>
+                                <h6 className="text-primary font-semibold text-xl flex items-center  gap-3"><PiGaugeBold /> {resultData.difficulty}</h6>
+                            </div>
+                            <div className="">
+                                <h3 className="text-gray text-2xl">Time </h3>
+                                <span className="text-primary text-4xl font-bold ">{((resultData.time) / 1000).toFixed(0)}s</span>
+                            </div>
+                        </div>
+                        <div className="text-white text-5xl absolute bottom-20 left-1/2 -translate-x-1/2 ">
+                            <MdOutlineRefresh className="cursor-pointer hover:text-primary"
+                                onClick={e => {
+                                    resetTest();
+                                }} />
+                        </div>
+                    </div>
 
                     :
                     <>
                         {
                             currentQuestion == 0 ?
-                                <SettingsBar settings={settings} setSettings={setSettings} />
+                                <>
+                                    <div className='flex gap-3 text-sm text-gray bg-dark w-fit py-3 px-6 rounded-lg mx-auto mt-5 mb-5'>
+                                        <ul className='flex items-center justify-center gap-6'>
+                                            <li className={`flex items-center justify-center gap-1 cursor-pointer hover:text-text font-semibold ${settings.type.includes("all") ? "text-primary" : "text-gray"}`}
+                                                onClick={e => changeSettingsType("all")}
+                                            ><BiMath />all</li>
+                                            <li className={`flex items-center justify-center gap-1 cursor-pointer hover:text-text font-semibold ${settings.type.includes("add") ? "text-primary" : "text-gray"}`}
+                                                onClick={e => changeSettingsType("add")}
+                                            ><CgMathPlus />add</li>
+                                            <li className={`flex items-center justify-center gap-1 cursor-pointer hover:text-text font-semibold ${settings.type.includes("sub") ? "text-primary" : "text-gray"}`}
+                                                onClick={e => changeSettingsType("sub")}
+                                            ><CgMathMinus />subtract</li>
+                                            <li className={`flex items-center justify-center gap-1 cursor-pointer hover:text-text font-semibold ${settings.type.includes("multiply") ? "text-primary" : "text-gray"}`}
+                                                onClick={e => changeSettingsType("multiply")}
+                                            ><FaTimes />multiply</li>
+                                            <li className={`flex items-center justify-center gap-1 cursor-pointer hover:text-text font-semibold ${settings.type.includes("squares") ? "text-primary" : "text-gray"}`}
+                                                onClick={e => changeSettingsType("squares")}
+                                            ><TbCircleNumber2 />square</li>
+                                            <li className={`flex items-center justify-center gap-1 cursor-pointer hover:text-text font-semibold ${settings.type.includes("root") ? "text-primary" : "text-gray"}`}
+                                                onClick={e => changeSettingsType("root")}
+                                            ><FaSquareRootAlt />root</li>
+                                        </ul>
+                                        <span className='bg-background w-1 h-7 rounded-full'></span>
+                                        <ul className='flex items-center justify-center gap-6'>
+                                            <li className={`flex items-center justify-center gap-1 cursor-pointer hover:text-text font-semibold ${settings.isTime ? "text-primary" : "text-gray"}`}
+                                                onClick={e => setSettings({ ...settings, isTime: true, number: 30 })}
+                                            ><AiFillClockCircle />time</li>
+                                            <li className={`flex items-center justify-center gap-1 cursor-pointer hover:text-text font-semibold ${!settings.isTime ? "text-primary" : "text-gray"}`}
+                                                onClick={e => setSettings({ ...settings, isTime: false, number: 10 })}
+                                            ><BsQuestionLg />questions</li>
+                                        </ul>
+                                        <span className='bg-background w-1 h-7 rounded-full'></span>
+
+                                        <ul className='flex items-center justify-center gap-6'>
+                                            {
+                                                (settings.isTime ? [30, 60, 120, 180] : [5, 10, 15, 25]).map((item, index) => (
+                                                    <li className={`flex items-center justify-center gap-1 cursor-pointer hover:text-text font-semibold ${settings.number === item ? "text-primary" : "text-gray"}`}
+                                                        onClick={e => setSettings({ ...settings, number: item })}
+                                                        key={index}>{item}</li>
+                                                ))
+                                            }
+                                            {/* <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-text font-semibold">custom</li> */}
+                                        </ul>
+                                    </div>
+                                    <div className="text-xl w-fit mx-auto mb-5 flex items-center justify-center gap-1 text-gray font-semibold hover:text-text cursor-pointer"
+                                        onClick={handleDifficultyChange}>
+                                        <PiGaugeBold /> difficulty: {settings.difficulty == 0 ? "mixed"  : settings.difficulty}
+                                    </div>
+                                </>
+
                                 :
                                 <div className="mx-auto w-fit flex items-center justify-center gap-10">
                                     <h1 className="text-primary text-5xl font-bold">{!settings.isTime ? `${currentQuestion}/${settings.number}` : ""}</h1>
