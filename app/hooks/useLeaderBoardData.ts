@@ -15,6 +15,6 @@ export function useLeaderBoardData() {
     return useQuery({
         queryFn: async () => {return await fetchLeaderBoardData()},
         queryKey: ["leaderboard"],
-        staleTime: 10 * 1000 * 60
+        staleTime: 60000 * 60
     })
 }
