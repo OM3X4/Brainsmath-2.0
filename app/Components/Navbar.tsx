@@ -5,11 +5,15 @@ import { PiMathOperationsBold } from "react-icons/pi";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import fetchProfile from "../fetchingFns/FetchUserData";
+import { MdLogout } from "react-icons/md";
+import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 
 
 function Navbar() {
 
-    const { data: userData } = useQuery({queryKey: ["userData"], queryFn: fetchProfile});
+    const { data: userData , refetch } = useQuery({queryKey: ["userData"], queryFn: fetchProfile});
+    const queryClient = useQueryClient();
 
     useEffect(() => {
         const savedTheme = localStorage.getItem('theme');
@@ -29,12 +33,15 @@ function Navbar() {
                     <Link href={"/settings"}><FaGear className="text-xl cursor-pointer text-gray  hover:text-primary" /></Link>
 
                 </div>
-                <Link href={userData ? '/profile' : '/authentication'}>
-                    <div className="flex items-center justify-center gap-3">
-                        <div className="size-6 bg-primary rounded-full cursor-pointer"></div>
-                        <p className="text-gray hover:text-white  text-md cursor-pointer">{userData ? userData.username : "Sign In"}</p>
-                    </div>
-                </Link>
+                <div className="flex items-center justify-center gap-5">
+                    <Link href={userData ? '/profile' : '/authentication'}>
+                        <div className="flex items-center justify-center gap-3">
+                            <div className="size-6 bg-primary rounded-full cursor-pointer"></div>
+                            <p className="text-gray hover:text-white  text-md cursor-pointer">{userData ? userData.username : "Sign In"}</p>
+                        </div>
+                    </Link>
+                    {userData ? <div onClick={() => {localStorage.clear();queryClient.setQueryData(['user'], null);window.location.href ='/authentication'}}><button className="text-white hover:text-primary cursor-pointer text-2xl mt-2"><MdLogout /></button></div> : ""}
+                </div>
             </nav>
         </>
     )
