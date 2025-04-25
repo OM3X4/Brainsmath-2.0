@@ -10,6 +10,7 @@ import { CgMathMinus } from "react-icons/cg";
 import { PiGaugeBold } from "react-icons/pi";
 import { BiMath } from "react-icons/bi";
 import { MdOutlineRefresh } from "react-icons/md";
+import { FaGear } from "react-icons/fa6";
 
 // components
 import { generateRandomQuestions } from "./utils/questionGen";
@@ -26,9 +27,8 @@ import { useStopwatch, useTimer } from "react-timer-hook";
 import { Drawer , DrawerTrigger  , DrawerContent , DrawerDescription , DrawerHeader , DrawerTitle } from "@/components/ui/drawer";
 import DrawerComponent from "./Components/Home/Drawer";
 import { Button } from "@/components/ui/button";
-
-
-
+import { Dialog , DialogTrigger , DialogContent , DialogClose } from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
 
 
 function Home() {
@@ -38,20 +38,13 @@ function Home() {
     const [tracker, setTracker] = useState<boolean[]>([]);
     const [answers, setAnswers] = useState<string[]>([]);
     const [isAnimating, setIsAnimating] = useState(false);
-
     const [TextFade, setTextFade] = useState<boolean>(true) // is text fading
-
     const [settings, setSettings] = useState<BarSettingsType>({ type: ["all"], number: 10, isTime: false, difficulty: 0 }) // bar settings state
-
     const [isResult, setIsResult] = useState<boolean>(false) // is result page
-
     const { data: profile, isLoading } = useProfileFetcher();
-
     const { mutate: submitTest , isSuccess } = useSubmitTest();
-
     // result page data
     const [resultData, setResultData] = useState<ResultData>({ quantity: 60, time: 30000, type: ["all"], correct: 30, difficulty: 1, mode: "questions" })
-
     const { seconds, minutes, isRunning, start, pause, resume, restart } = useTimer({
         expiryTimestamp: new Date(),
         autoStart: false,
@@ -72,7 +65,6 @@ function Home() {
 
     const stopTimer = useStopwatch({ autoStart: false });
 
-
     const startNewTimer = (durationInSeconds: number) => {
         const time = new Date();
         time.setSeconds(time.getSeconds() + durationInSeconds);
@@ -90,10 +82,6 @@ function Home() {
             );
         }
     };
-
-
-
-
 
     // reset the timer and test
     const resetTest = () => {
@@ -116,17 +104,12 @@ function Home() {
         resetTest();
     }, [settings , isLoading])
 
-
-
     // set Start Time
     useEffect(() => {
         if (settings.isTime && !isResult && !isLoading) {
             startNewTimer(settings.number);
         }
     }, [settings, isResult , isLoading]);
-
-
-
 
     const generateQuestions = (setting: BarSettingsType): void => {
         if (setting.isTime) {
@@ -195,8 +178,6 @@ function Home() {
         stopTimer,
     })
 
-
-
     useEffect(() => {
         if (isResult) {
         const serializedTest: TestSubmitType = {
@@ -212,12 +193,7 @@ function Home() {
         }
     } , [isResult])
 
-
     if (isLoading) return <Loading />;
-
-
-
-
 
     return (
         <>
@@ -263,7 +239,8 @@ function Home() {
                         {
                             currentQuestion == 0 ?
                                 <>
-                                    <div className='flex gap-3 text-sm text-gray bg-dark w-fit py-3 px-6 rounded-lg mx-auto mt-5 mb-5'>
+                                    {/* settings bar for pc */}
+                                    <div className='gap-3 text-sm text-gray bg-dark w-fit py-3 px-6 rounded-lg mx-auto mt-5 mb-5 hidden lg:flex'>
                                         <ul className='flex items-center justify-center gap-6'>
                                             <li className={`flex items-center justify-center gap-1 cursor-pointer hover:text-text font-semibold ${settings.type.includes("all") ? "text-primary" : "text-gray"}`}
                                                 onClick={e => changeSettingsType("all")}
@@ -306,6 +283,50 @@ function Home() {
                                             {/* <li className="flex items-center justify-center gap-1 cursor-pointer hover:text-text font-semibold">custom</li> */}
                                         </ul>
                                     </div>
+
+                                    {/* tests settings bar for mobile */}
+                                    <div className=" lg:hidden">
+                                        <Dialog>
+                                            <DialogTrigger className="w-full flex items-center justify-center my-2"><Button className="bg-dark text-gray hover:bg-gray hover:text-dark w-fit"><FaGear/>settings</Button></DialogTrigger>
+                                            <DialogContent>
+                                                <DialogClose
+                                                onClick={e => resetTest()}><Button className="bg-error">Close</Button></DialogClose>
+                                                <div>
+                                                    <div className={`w-full text-center my-1 py-1 font-medium rounded-2xl ${settings.type.includes("all") ? "bg-primary text-gray" : "text-reverse bg-dark"}`}
+                                                    onClick={e => changeSettingsType("all")}>all</div>
+                                                    <div className={`w-full text-center my-1 py-1 font-medium rounded-2xl ${settings.type.includes("add") ? "bg-primary text-gray" : "text-reverse bg-dark"}`}
+                                                    onClick={e => changeSettingsType("add")}>add</div>
+                                                    <div className={`w-full text-center my-1 py-1 font-medium rounded-2xl ${settings.type.includes("sub") ? "bg-primary text-gray" : "text-reverse bg-dark"}`}
+                                                    onClick={e => changeSettingsType("sub")}>subtract</div>
+                                                    <div className={`w-full text-center my-1 py-1 font-medium rounded-2xl ${settings.type.includes("multiply") ? "bg-primary text-gray" : "text-reverse bg-dark"}`}
+                                                    onClick={e => changeSettingsType("multiply")}>multiply</div>
+                                                    <div className={`w-full text-center my-1 py-1 font-medium rounded-2xl ${settings.type.includes("squares") ? "bg-primary text-gray" : "text-reverse bg-dark"}`}
+                                                    onClick={e => changeSettingsType("squares")}>square</div>
+                                                    <div className={`w-full text-center my-1 py-1 font-medium rounded-2xl ${settings.type.includes("root") ? "bg-primary text-gray" : "text-reverse bg-dark"}`}
+                                                    onClick={e => changeSettingsType("root")}>root</div>
+                                                </div>
+                                                <Separator/>
+                                                <div>
+                                                    <div className={`w-full text-center my-1 py-1 font-medium rounded-2xl ${!settings.isTime ? "bg-primary text-gray" : "text-reverse bg-dark"}`}
+                                                    onClick={e => setSettings({ ...settings, isTime: false, number: 10 })}>questions</div>
+                                                    <div className={`w-full text-center my-1 py-1 font-medium rounded-2xl ${settings.isTime ? "bg-primary text-gray" : "text-reverse bg-dark"}`}
+                                                    onClick={e => setSettings({ ...settings, isTime: true, number: 30 })}>time</div>
+                                                </div>
+                                                <Separator/>
+                                                <div>
+                                                    {
+                                                        (settings.isTime ? [30, 60, 120, 180] : [5, 10, 15, 25]).map((item, index) => (
+                                                            <div className={`w-full text-center my-1 py-1 font-medium rounded-2xl ${settings.number === item ? "bg-primary text-gray" : "text-reverse bg-dark"}`}
+                                                                onClick={e => setSettings({ ...settings, number: item })}
+                                                                key={index}>{item}</div>
+                                                        ))
+                                                    }
+                                                </div>
+
+                                            </DialogContent>
+                                        </Dialog>
+                                    </div>
+
                                     <div className="text-xl w-fit mx-auto mb-5 flex items-center justify-center gap-1 text-gray font-semibold hover:text-text cursor-pointer"
                                         onClick={handleDifficultyChange}>
                                         <PiGaugeBold /> difficulty: {settings.difficulty == 0 ? "mixed"  : settings.difficulty}
