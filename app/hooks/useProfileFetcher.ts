@@ -1,7 +1,7 @@
 'use client'
 import { useQuery } from '@tanstack/react-query';
 import fetchProfile from '../fetchingFns/FetchUserData';
-
+import React from 'react';
 
 type Score = {
     id: number;
@@ -39,8 +39,8 @@ type QuestionScores = {
 };
 
 type BestScores = {
-    time: TimeScores;
-    questions: QuestionScores;
+    time: TimeScores[];
+    questions: QuestionScores[];
 };
 
 type Streak = {
@@ -62,12 +62,20 @@ type UserData = {
 
 
 export default function ProfileFetcher() {
-    useQuery<UserData>({
+    const query =  useQuery<UserData>({
         queryKey: ["userData"],
         queryFn: fetchProfile,
         staleTime: 60000 * 60,
         retry: 1,
     })
 
-    return null;
+    React.useEffect(() => {
+        if(query.isSuccess){
+            localStorage.setItem("theme", query.data.theme)
+            localStorage.setItem("font", query.data.font)
+        }
+    })
+
+    return query
+
 }

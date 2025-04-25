@@ -20,6 +20,7 @@ import Loading from './loading';
 import { playRandomSound } from "./utils/useSoundPlayer";
 import { useSubmitTest } from "./hooks/useSubmitTest";
 import useKeyPressHandler from "./hooks/useKeyPressHandler";
+import ProfileFetcher from "./hooks/useProfileFetcher";
 
 // libraries
 import React, { useState, useEffect, useRef } from 'react'
@@ -46,7 +47,8 @@ function Home() {
 
     const [isResult, setIsResult] = useState<boolean>(false) // is result page
 
-    const { data: profile, isLoading } = useQuery({ queryKey: ['userData']  , queryFn: fetchProfile });
+    const { data: profile, isLoading } = ProfileFetcher();
+
     const { mutate: submitTest , isSuccess } = useSubmitTest();
 
     // result page data
@@ -282,7 +284,6 @@ function Home() {
             difficulty: resultData.difficulty,
             mode: resultData.mode == 'time' ? "time" : "questions"
         }
-        console.log(JSON.stringify(serializedTest))
         submitTest(serializedTest);
         }
     } , [isResult])

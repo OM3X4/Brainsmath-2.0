@@ -2,8 +2,7 @@ import { TestSubmitType } from "../types/types";
 import FetchRefreshToken from "./FetchRefreshToken";
 
 export default async function fetchSubmitTest(data: TestSubmitType){
-    console.log("submitting test")
-    if(!localStorage.getItem("access_token")) {console.log("no token");return;}
+    if(!localStorage.getItem("access_token")) {return;}
 
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/test/`, {
@@ -21,6 +20,5 @@ export default async function fetchSubmitTest(data: TestSubmitType){
 
 
     const result = await response.json()
-    console.log(result)
     return result
 }

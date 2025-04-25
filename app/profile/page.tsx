@@ -1,7 +1,6 @@
 'use client'
 // app/profile/[id]/page.tsx
-import { useQuery } from "@tanstack/react-query";
-import fetchProfile from "../fetchingFns/FetchUserData";
+import ProfileFetcher from "../hooks/useProfileFetcher";
 import Loading from "../loading";
 import { formatDate } from "../utils/dateFormater";
 import daysSince from "../utils/daysSince";
@@ -10,7 +9,7 @@ import daysSince from "../utils/daysSince";
 export default function ProfilePage() {
 
 
-    const { data: userData, isLoading, isError } = useQuery({ queryKey: ["userData"], queryFn: fetchProfile });
+    const { data: userData, isLoading, isError } = ProfileFetcher();
 
     if (isLoading) return <Loading />;
 
@@ -22,18 +21,18 @@ export default function ProfilePage() {
                     {/* img */}
                     <div className="size-20 bg-primary rounded-full"></div>
                     <div className="">
-                        <h1 className="text-reverse text-2xl font-bold">@{userData.username}</h1>
+                        <h1 className="text-reverse text-2xl font-bold">@{userData?.username}</h1>
                         {/* joining this website date */}
                         <div className="group relative flex items-center gap-5">
-                            <h2 className="text-gray text-xs cursor-pointer">joined {formatDate(userData.date_joined)}</h2>
+                            <h2 className="text-gray text-xs cursor-pointer">joined {formatDate(userData?.date_joined || "")}</h2>
 
                             {/* Tooltip */}
                             <div className="w-fit text-nowrap absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2 py-1 rounded bg-reverse text-background text-sm opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 origin-left z-10">
                                 <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-2 w-0 h-0 border-y-8 border-y-transparent border-r-8 border-r-reverse" />
-                                {daysSince(userData.date_joined)} days ago
+                                {daysSince(userData?.date_joined || "")} days ago
                             </div>
                         </div>
-                        <h2 className="text-gray text-xs cursor-pointer">current streak: {userData.streak.user_streak} days</h2>
+                        <h2 className="text-gray text-xs cursor-pointer">current streak: {userData?.streak.user_streak} days</h2>
                     </div>
                     <div className="w-1 h-18 rounded-full bg-background"></div>
                     <div className="flex items-center justify-center gap-10">
@@ -51,7 +50,7 @@ export default function ProfilePage() {
             <div className="w-[80%] mx-auto px-10 py-7 bg-dark rounded-2xl">
                 <div className="flex items-center justify-around text-reverse gap-5 px-10" >
                     {
-                        userData.best_scores.questions.map((score: any, index: any) => (
+                        userData?.best_scores.questions.map((score: any, index: any) => (
                             <div key={index}>
                                 <p className="text-gray text-xs">{score.value} Questions</p>
                                 <h1 className=" text-primary text-5xl font-bold">{score.test.qpm}</h1>
@@ -60,7 +59,7 @@ export default function ProfilePage() {
                     }
                     <div className="h-30 w-2 rounded-full bg-reverse"></div>
                     {
-                        userData.best_scores.time.map((score: any, index: any) => (
+                        userData?.best_scores.time.map((score: any, index: any) => (
                             <div key={index}>
                                 <p className="text-gray text-xs">{score.value} s</p>
                                 <h1 className=" text-primary text-5xl font-bold">{score.test ? score.test.qpm : "-"}</h1>

@@ -34,9 +34,7 @@ function Authentication() {
   const [isPasswordEqual , setIsPasswordEqual] = useState<boolean>(true)
 
   async function handleLogin(){
-    console.log(loginData)
     const result = login(loginData)
-    console.log(result)
   }
 
   async function handleRegister() {
@@ -49,9 +47,7 @@ function Authentication() {
         password: signupData.password,
       });
       login({username:signupData.username , password:signupData.password});
-      console.log("Registered successfully");
     } catch (err: any) {
-      console.log(err)
       if(err.message == "A user with that username already exists.") {
         setIsUsernameTaken(true)
       }
@@ -82,9 +78,6 @@ function Authentication() {
     }
   } , [signupData.passwordver])
 
-  useEffect(() => {
-    console.log(isPasswordEqual)
-  } , [isPasswordEqual])
 
 
   return (

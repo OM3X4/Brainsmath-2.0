@@ -8,7 +8,7 @@ import { Roboto, JetBrains_Mono , IBM_Plex_Sans , Ubuntu} from 'next/font/google
 import Footer from "./Components/Footer";
 import { GoogleAnalytics } from '@next/third-parties/google'
 import QueryProvider from "./QueryProvider";
-import ProfileFetcher from "./hooks/useProfileFetcher";
+import Notifications from "./Components/Notifications";
 
 
 const roboto = Roboto({
@@ -96,8 +96,8 @@ export default function RootLayout({
       >
         <GoogleAnalytics gaId="G-S42CJ0GTXJ" />
         <QueryProvider>
-          <ProfileFetcher />
           <FontProvider>
+            <Notifications />
             <div className="w-screen min-h-screen">
               <Navbar />
               {children}
