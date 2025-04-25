@@ -23,7 +23,7 @@ import useKeyPressHandler from "./hooks/useKeyPressHandler";
 import useProfileFetcher from "./hooks/useProfileFetcher";
 
 // libraries
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { useStopwatch, useTimer } from "react-timer-hook";
 import { Drawer, DrawerTrigger, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import DrawerComponent from "./Components/Home/Drawer";
@@ -40,7 +40,7 @@ function Home() {
     const [answers, setAnswers] = useState<string[]>([]);
     const [isAnimating, setIsAnimating] = useState(false);
     const [TextFade, setTextFade] = useState<boolean>(true) // is text fading
-    const [settings, setSettings] = useState<BarSettingsType>({ type: ["all"], number: 10, isTime: false, difficulty: 0 }) // bar settings state
+    const [settings, setSettings] = useState<BarSettingsType>({ type: ["all"], number: 10, isTime: false, difficulty: 1 }) // bar settings state
     const [isResult, setIsResult] = useState<boolean>(false) // is result page
     const { data: profile, isLoading } = useProfileFetcher();
     const { mutate: submitTest, isSuccess } = useSubmitTest();
@@ -288,7 +288,7 @@ function Home() {
                                     {/* tests settings bar for mobile */}
                                     <div className=" lg:hidden">
                                         <Dialog>
-                                            <DialogTrigger className="w-full flex items-center justify-center my-2"><Button className="bg-dark text-gray hover:bg-gray hover:text-dark w-fit"><FaGear />settings</Button></DialogTrigger>
+                                            <DialogTrigger className="w-full flex items-center justify-center my-2"><div className="bg-dark text-gray hover:bg-gray hover:text-dark w-fit flex items-center justify-center gap-2 rounded-2xl py-2 px-4"><FaGear />settings</div></DialogTrigger>
                                             <DialogContent>
                                                 <DialogClose
                                                     onClick={e => resetTest()}><Button className="bg-error">Close</Button></DialogClose>
@@ -341,7 +341,7 @@ function Home() {
                                 </div>
                         }
                         {/* Numbers and math */}
-                        <div className="relative h-[25vh] lg:h-[calc(100vh-400px)] w-full overflow-hidden flex items-center justify-center"
+                        <div className="relative h-[25vh]  lg:h-[calc(100vh-400px)] w-full overflow-hidden flex items-center justify-center"
                             style={{ opacity: TextFade ? 0 : 1 }}>
 
                             <div
@@ -403,14 +403,14 @@ function Home() {
                         {/* num pad */}
                         <div>
                             <Drawer>
-                                <DrawerTrigger className="fixed bottom-10 lg:bottom-5 right-5"onClick={resetTest}><Button><FaTerminal /></Button></DrawerTrigger>
+                                <DrawerTrigger><div className="fixed bottom-10 lg:bottom-5 right-5 bg-primary w-10 h-10 rounded-xl flex items-center justify-center text-2xl text-background hover:bg-dark hover:text-primary"onClick={resetTest}><FaTerminal /></div></DrawerTrigger>
                                 <DrawerContent>
                                     <div className="flex items-center justify-center flex-wrap gap-y-3 gap-x-4">
                                         {
-                                            ["1", "2", "3", "4", "5", "6", "7", "8", "9", "="].map((item, index) => (
+                                            ["1", "2", "3", "4", "5", "6", "7", "8", "9" , "0", "=" , "Backspace"].map((item, index) => (
                                                 <Button
                                                     key={index}
-                                                    className="size-1/4 text-2xl "
+                                                    className="w-2/7 [@media(min-height:900px)]:h-[10vh] h-[5vh] text-2xl "
                                                     onClick={() => {
                                                         let key = item;
                                                         let code = `Digit${item}`;
@@ -445,7 +445,7 @@ function Home() {
                         {/* Theme */}
                         <div>
                             <Drawer>
-                                <DrawerTrigger className="hidden md:absolute bottom-5 left-5"><Button>Change Theme</Button></DrawerTrigger>
+                                <DrawerTrigger className="hidden md:absolute bottom-5 left-5"><div className="text-gray hover:text-primary">Change Theme</div></DrawerTrigger>
                                 <DrawerContent>
                                     <div className="w-[80%] mx-auto">
                                         <DrawerHeader>

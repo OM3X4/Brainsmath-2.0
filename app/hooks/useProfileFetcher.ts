@@ -70,13 +70,14 @@ export default function useuseProfileFetcher() {
     })
 
     React.useEffect(() => {
+        console.log("hi bro" , )
         if(query.isSuccess){
             console.log("theme changed by query");
             document.body.setAttribute("data-theme", query.data.theme);
             localStorage.setItem("theme", query.data.theme)
             localStorage.setItem("font", query.data.font)
         }
-    } , [])
+    } , [query.isSuccess , query.data])
 
     return query
 
