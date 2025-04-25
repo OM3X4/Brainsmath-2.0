@@ -1,9 +1,5 @@
-'use client'
-import { BiFont } from "react-icons/bi";
-import { IoMdColorPalette } from "react-icons/io";
-import React, { useEffect, useState } from 'react'
-import { useFont } from "../context/FontContext";
-import useUpdateUserSettings from "../hooks/useUpdateUserSettings";
+import React from 'react'
+import useUpdateUserSettings from '@/app/hooks/useUpdateUserSettings';
 
 const themes = [
     { name: "vscode", displayName: "VS Code", background: "#1e1e1e", primary: "#007acc" },
@@ -41,47 +37,23 @@ const themes = [
     { name: "serikadark", displayName: "Serika Dark", background: "#323437", primary: "#e2b714" }
 ];
 
-const fonts = [
-    { name: "ibm", displayName: "IBM Plex Sans" },
-    { name: "roboto", displayName: "Roboto" },
-    { name: "ubuntu", displayName: "Ubuntu" },
-    { name: "jetbrains", displayName: "JetBrains Mono" },
-    { name: "helvetica", displayName: "Helvetica" },
 
-]
 
-function Settings() {
 
-    const { mutate: updateSettings} = useUpdateUserSettings();
+function DrawerComponent() {
 
-    const { setFont } = useFont();
-
-    const [fade , setFade] = useState(true);
+    const { mutate:updateSettings } = useUpdateUserSettings();
 
     const handleThemeChange = (name: string) => {
-        console.log("theme changed by settings")
+        updateSettings({theme: name})
         localStorage.setItem("theme", name);
         document.body.setAttribute("data-theme", name);
-        updateSettings({theme: name})
     }
-
-    useEffect(() => {
-        setTimeout(() => {
-            setFade(false)
-        } , 500)
-    } , [])
-
-
-
-
-
 
 
     return (
-        <div className="w-11/12 mx-auto mt-10" style={{opacity: fade ? 0 : 1}}>
-            <div className="flex items-center justify-center flex-wrap gap-y-3 gap-x-4 m-5">
-                <h1 className="text-gray text-5xl flex items-center  gap-5 w-full mb-5 ml-5"><IoMdColorPalette />Theme</h1>
-                {
+        <div className="flex items-center justify-center flex-wrap gap-y-3 gap-x-4 m-5">
+            {
                     themes.map((theme , index) => {
                         return (
                             <div className="bg-white text-lg w-2/9 text-center px-3 py-2 rounded-md border cursor-pointer hover:border-white border-background"
@@ -93,28 +65,8 @@ function Settings() {
                         )
                     })
                 }
-            </div>
-            <div className="flex items-center justify-center flex-wrap gap-y-3 gap-x-4 m-5">
-                <h1 className="text-gray text-5xl flex items-center  gap-5 w-full mb-5 ml-5"><BiFont />Fonts</h1>
-                {
-                    fonts.map((font , index) => {
-                        return (
-                            <button className={`text-lg text-gray bg-text w-2/9 text-center px-3 py-2 rounded-md border cursor-pointer hover:border-white border-background`}
-                            style={{ fontFamily: font.name == "helvetica" ? "Helvetica" : `var(--font-${font.name})` }}
-                            onClick={() => setFont(`var(--font-${font.name})`)}
-                            key={index}>
-                                {font.displayName}
-                            </button>
-                        )
-                    })
-                }
-                {/* <button className="text-lg text-gray bg-text w-2/9 text-center px-3 py-2 rounded-md border cursor-pointer hover:border-white border-background"
-                onClick={() => setFont('var(--font-ibm)')}>IBM Plex Sans</button>
-                <button className="text-lg text-gray bg-text w-2/9 text-center px-3 py-2 rounded-md border cursor-pointer hover:border-white border-background"
-                onClick={() => setFont('var(--font-ubuntu)')}>Ubuntu</button> */}
-            </div>
         </div>
     )
 }
 
-export default Settings
+export default DrawerComponent

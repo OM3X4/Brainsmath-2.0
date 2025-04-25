@@ -7,11 +7,11 @@ import { useQuery } from "@tanstack/react-query";
 import fetchProfile from "../fetchingFns/FetchUserData";
 import { MdLogout } from "react-icons/md";
 import { useQueryClient } from "@tanstack/react-query";
-import ProfileFetcher from "../hooks/useProfileFetcher";
+import useProfileFetcher from "../hooks/useProfileFetcher";
 
 function Navbar() {
 
-    const { data: userData , refetch } = ProfileFetcher();
+    const { data: userData , refetch } = useProfileFetcher();
     const queryClient = useQueryClient();
 
     useEffect(() => {

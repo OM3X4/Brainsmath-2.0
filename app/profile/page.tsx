@@ -1,6 +1,6 @@
 'use client'
 // app/profile/[id]/page.tsx
-import ProfileFetcher from "../hooks/useProfileFetcher";
+import useProfileFetcher from "../hooks/useProfileFetcher";
 import Loading from "../loading";
 import { formatDate } from "../utils/dateFormater";
 import daysSince from "../utils/daysSince";
@@ -9,7 +9,7 @@ import daysSince from "../utils/daysSince";
 export default function ProfilePage() {
 
 
-    const { data: userData, isLoading, isError } = ProfileFetcher();
+    const { data: userData, isLoading, isError } = useProfileFetcher();
 
     if (isLoading) return <Loading />;
 

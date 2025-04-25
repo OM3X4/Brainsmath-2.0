@@ -14,20 +14,18 @@ import { MdOutlineRefresh } from "react-icons/md";
 // components
 import { generateRandomQuestions } from "./utils/questionGen";
 import { Question, BarSettingsType, ResultData, QuestionType , TestSubmitType } from "./types/types";
-import fetchProfile from './fetchingFns/FetchUserData';
 import calculateQPM from "./utils/qpm";
 import Loading from './loading';
-import { playRandomSound } from "./utils/useSoundPlayer";
 import { useSubmitTest } from "./hooks/useSubmitTest";
 import useKeyPressHandler from "./hooks/useKeyPressHandler";
-import ProfileFetcher from "./hooks/useProfileFetcher";
+import useProfileFetcher from "./hooks/useProfileFetcher";
 
 // libraries
 import React, { useState, useEffect, useRef } from 'react'
-import { useQuery } from "@tanstack/react-query";
 import { useStopwatch, useTimer } from "react-timer-hook";
-
-
+import { Drawer , DrawerTrigger  , DrawerContent , DrawerDescription , DrawerHeader , DrawerTitle } from "@/components/ui/drawer";
+import DrawerComponent from "./Components/Home/Drawer";
+import { Button } from "@/components/ui/button";
 
 
 
@@ -47,7 +45,7 @@ function Home() {
 
     const [isResult, setIsResult] = useState<boolean>(false) // is result page
 
-    const { data: profile, isLoading } = ProfileFetcher();
+    const { data: profile, isLoading } = useProfileFetcher();
 
     const { mutate: submitTest , isSuccess } = useSubmitTest();
 
@@ -197,80 +195,6 @@ function Home() {
         stopTimer,
     })
 
-    // const handleKeyPress = React.useCallback((e: KeyboardEvent) => {
-    //     if (["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(e.key)) {
-    //         playRandomSound("click");
-    //         setAnswers(prev => {
-    //             const newAnswers = [...prev];
-    //             newAnswers[currentQuestion] = newAnswers[currentQuestion] + e.key;
-    //             return newAnswers
-    //         })
-    //     } else if (e.key === "Backspace") {
-    //         setAnswers(prev => {
-    //             const newAnswers = [...prev];
-    //             newAnswers[currentQuestion] = newAnswers[currentQuestion].slice(0, -1);
-    //             return newAnswers
-    //         })
-
-    //     } else if (e.key === " ") {
-    //         if (isAnimating) return; // Prevent multiple transitions
-
-    //         if (!answers[currentQuestion]) return // Prevent empty answers
-
-    //         if(answers[currentQuestion] != questions[currentQuestion].answer){
-    //             playRandomSound("wrong");
-    //         }else{
-    //             playRandomSound("correct")
-    //         }
-
-    //         if (currentQuestion < questions.length - 1) {
-    //             setTracker(prev => {
-    //                 const newTracker = [...prev];
-    //                 newTracker[currentQuestion] = questions[currentQuestion].answer === answers[currentQuestion];
-    //                 return newTracker
-    //             })
-
-
-    //             // Change question after a brief delay to allow animation to start
-    //             setTimeout(() => {
-    //                 setCurrentQuestion(prev => prev + 1);
-
-    //                 // Reset animation flag after transition completes
-    //                 setTimeout(() => {
-    //                     setIsAnimating(false);
-    //                 }, 300); // Match this with CSS transition duration
-    //             }, 50);
-    //         } else {
-    //             if (!settings.isTime) {
-    //                 setResultData(prev => ({
-    //                     ...prev,
-    //                     type: settings.type,
-    //                     quantity: questions.length,
-    //                     time: stopTimer.totalSeconds * 1000,
-    //                     correct: tracker.filter(t => t).length,
-    //                     difficulty: settings.difficulty
-    //                 }))
-    //             }
-    //             setTextFade(true);
-    //             resetTest();
-    //             setIsResult(true);
-
-    //         }
-    //     } else if (e.key == "Tab") {
-    //         e.preventDefault()
-    //         resetTest();
-    //     }else if(e.key != "Control" && e.key != "Alt" && e.key != "Shift"){
-    //         playRandomSound("wrong");
-    //     }
-    // }, [currentQuestion , answers])
-
-    // useEffect(() => {
-    //     window.addEventListener("keydown", handleKeyPress)
-
-    //     return () => {
-    //         window.removeEventListener("keydown", handleKeyPress)
-    //     }
-    // }, [handleKeyPress])
 
 
     useEffect(() => {
@@ -451,6 +375,20 @@ function Home() {
                                 onClick={e => {
                                     resetTest();
                                 }} />
+                        </div>
+                        <div>
+                            <Drawer>
+                                <DrawerTrigger className="absolute bottom-5 left-5"><Button>Change Theme</Button></DrawerTrigger>
+                                <DrawerContent>
+                                    <div className="w-[80%] mx-auto">
+                                        <DrawerHeader>
+                                            <DrawerTitle className="text-primary text-4xl">Change Theme</DrawerTitle>
+                                            <DrawerDescription className="text-gray">Choose your preferred theme</DrawerDescription>
+                                        </DrawerHeader>
+                                        <DrawerComponent />
+                                    </div>
+                                </DrawerContent>
+                            </Drawer>
                         </div>
                     </>
             }

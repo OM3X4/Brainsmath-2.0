@@ -61,7 +61,7 @@ type UserData = {
 
 
 
-export default function ProfileFetcher() {
+export default function useuseProfileFetcher() {
     const query =  useQuery<UserData>({
         queryKey: ["userData"],
         queryFn: fetchProfile,
@@ -71,10 +71,12 @@ export default function ProfileFetcher() {
 
     React.useEffect(() => {
         if(query.isSuccess){
+            console.log("theme changed by query");
+            document.body.setAttribute("data-theme", query.data.theme);
             localStorage.setItem("theme", query.data.theme)
             localStorage.setItem("font", query.data.font)
         }
-    })
+    } , [])
 
     return query
 

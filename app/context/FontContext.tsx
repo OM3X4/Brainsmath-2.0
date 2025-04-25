@@ -2,6 +2,9 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import useUpdateUserSettings from '../hooks/useUpdateUserSettings';
+
+
 
 type FontContextType = {
   font: string;
@@ -12,11 +15,7 @@ const FontContext = createContext<FontContextType | undefined>(undefined);
 
 export const FontProvider = ({ children }: { children: ReactNode }) => {
   const [font, setFont] = useState('var(--font-ibm)');
-
-  // Apply the font on every change
-  useEffect(() => {
-    document.body.style.fontFamily = font;
-  }, [font]);
+  const { mutate: updateSettings} = useUpdateUserSettings();
 
   useEffect(() => {
     const savedFont = localStorage.getItem('font');
@@ -24,6 +23,7 @@ export const FontProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
+    updateSettings({font: font})
     localStorage.setItem('font', font);
     document.body.style.fontFamily = font;
   }, [font]);

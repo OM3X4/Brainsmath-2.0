@@ -4,13 +4,11 @@ import { FaUserAlt } from "react-icons/fa";
 import { FaChevronLeft } from "react-icons/fa";
 import React, { useEffect, useMemo, useState } from 'react'
 import { useLeaderBoardData } from '../hooks/useLeaderBoardData'
-import ProfileFetcher from "../hooks/useProfileFetcher";
-import fetchProfile from '../fetchingFns/FetchUserData'
+import useProfileFetcher from "../hooks/useProfileFetcher";
 import Loading from '../loading'
 import formatDateTime from '../utils/dateFormaterLeaderboard'
 import { FaCrown } from "react-icons/fa";
 import { useUserRank } from "../hooks/useUserRank";
-import { profile } from "console";
 
 function Entity({ index, accuracy, creation, qpm, raw, username, isHeader, isMe, isOdd }: any) {
 
@@ -45,7 +43,7 @@ function Entity({ index, accuracy, creation, qpm, raw, username, isHeader, isMe,
 
 function Leaderboard() {
 
-    const { data: userData } = ProfileFetcher();
+    const { data: userData } = useProfileFetcher();
 
 
     const [currentPage, setCurrentPage] = useState<number>(1)
@@ -74,7 +72,7 @@ function Leaderboard() {
 
     return (
         <div className='w-[60%] mx-auto mt-5'>
-            <h1 className='text-reverse text-3xl font-bold my-8'>All-Time Mixed 60s Leaderboard</h1>
+            <h1 className='text-reverse text-3xl font-bold my-8'>All-Time difficulty 5 60s Leaderboard</h1>
             {
                 userData &&
                     userRankData ? <Entity index={userRankData.index - 1} username={userRankData.username} time={userRankData.time} qpm={userRankData.qpm} accuracy={userRankData.accuracy} raw={userRankData.raw} creation={userRankData.creation} isMe={true} /> : <div className='w-full my-5 rounded-2xl bg-dark  text-2xl py-4  h-fit text-center text-gray'>Not Qualified</div>
