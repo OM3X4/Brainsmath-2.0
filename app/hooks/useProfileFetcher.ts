@@ -60,17 +60,18 @@ type UserData = {
 
 
 
-
-export default function useuseProfileFetcher() {
+export default function useProfileFetcher() {
+    const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
     const query =  useQuery<UserData>({
         queryKey: ["userData"],
         queryFn: fetchProfile,
         staleTime: 60000 * 60,
         retry: 1,
+        enabled: !!accessToken
     })
 
     React.useEffect(() => {
-        console.log("hi bro" , )
+        console.log(query.isSuccess , query.data)
         if(query.isSuccess){
             console.log("theme changed by query");
             document.body.setAttribute("data-theme", query.data.theme);

@@ -23,7 +23,7 @@ export const FontProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    updateSettings({font: font})
+    if(localStorage.getItem("access_token")) updateSettings({font: font})
     localStorage.setItem('font', font);
     document.body.style.fontFamily = font;
   }, [font]);

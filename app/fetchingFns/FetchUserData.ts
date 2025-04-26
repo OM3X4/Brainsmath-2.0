@@ -1,7 +1,7 @@
 import FetchRefreshToken from "./FetchRefreshToken";
 export default async function fetchProfile() {
 
-    if(!localStorage.getItem("access_token")) {return;}
+    if(!localStorage.getItem("access_token")) throw new Error("No access token found");
 
 
     const accessToken = localStorage.getItem("access_token");
@@ -28,5 +28,5 @@ export default async function fetchProfile() {
     }
 
     const data = await response.json();
-    return data;
+    return data ?? null;
 }

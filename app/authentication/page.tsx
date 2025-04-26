@@ -82,9 +82,9 @@ function Authentication() {
 
   return (
     <>
-        <div className=' w-screen flex mt-20 justify-center gap-50 bg-background'>
+        <div className=' w-screen flex flex-col md:flex-row mt-20 justify-center gap-y-10 gap-x-50 bg-background'>
           {/* Register */}
-            <div className="flex flex-col gap-5 text-white">
+            <div className="flex items-center justify-center flex-col gap-5 text-white">
                 <div className="flex items-center justify- gap-5 text-primary mb-3">
                     <IoMdPersonAdd className="text-3xl"/>
                     <h1 className="text-2xl font-semibold">register</h1>
@@ -117,11 +117,11 @@ function Authentication() {
                 </div>
                 <button
                   onClick={handleRegister}
-                  className="bg-primary py-2 px-4 rounded-lg cursor-pointer font-bold text-2xl hover:bg-white hover:text-black">Sign Up</button>
+                  className="bg-primary md:w-full py-2 px-4 rounded-lg cursor-pointer font-bold text-2xl hover:bg-white hover:text-black">Sign Up</button>
             </div>
             {/* Login */}
-            <div className="flex flex-col gap-5 text-white">
-              <div className="flex items-center justify- gap-5 text-primary mb-3">
+            <div className="flex items-center -center flex-col gap-5 text-white">
+              <div className="flex items-center  gap-5 text-primary mb-3">
                 <BiLogIn className="text-3xl"/>
                 <h1 className="text-2xl font-semibold">login</h1>
               </div>
@@ -134,7 +134,7 @@ function Authentication() {
                 <FaEyeSlash className="absolute top-1/2 -translate-y-1/2 right-5 text-gray" onClick={e => setPasswordShow(prev => ({...prev , login:false}))}/> :
                 <FaEye className="absolute top-1/2 -translate-y-1/2 right-5 text-gray" onClick={e => setPasswordShow(prev => ({...prev , login:true}))}/>}
               </div>
-              <button className="bg-primary py-2 px-4 rounded-lg cursor-pointer font-bold text-2xl hover:bg-white hover:text-black"
+              <button className="bg-primary md:w-full py-2 px-4 rounded-lg cursor-pointer font-bold text-2xl hover:bg-white hover:text-black"
               onClick={handleLogin}>Sign In</button>
 
             </div>

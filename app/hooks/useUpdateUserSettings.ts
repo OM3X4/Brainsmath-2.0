@@ -13,19 +13,27 @@ async function fetchUpdateUserSettings(data : any) {
 
     if(response.refresh_token) FetchRefreshToken(response.refresh_token!);
 
+
+    // if(!response.ok) throw new Error("Failed to update user settings");
+
     return response;
 }
-
+import useProfileFetcher from "./useProfileFetcher";
 
 
 export default function useUpdateUserSettings() {
+
+    const { refetch } = useProfileFetcher();
+
+
     return useMutation({
         mutationFn: async (data : any) => {return await fetchUpdateUserSettings(data)},
         onError: (error) => {
             console.log("error : ",  error)
         },
         onSuccess: (data) => {
-            console.log("updated" , data)
+            console.log("updated" , data),
+            refetch();
         },
         retry: 1
     })

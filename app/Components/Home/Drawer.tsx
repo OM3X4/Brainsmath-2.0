@@ -45,7 +45,7 @@ function DrawerComponent() {
     const { mutate:updateSettings } = useUpdateUserSettings();
 
     const handleThemeChange = (name: string) => {
-        updateSettings({theme: name})
+        if(localStorage.getItem("access_token")) updateSettings({theme: name});
         localStorage.setItem("theme", name);
         document.body.setAttribute("data-theme", name);
     }

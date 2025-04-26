@@ -62,7 +62,7 @@ function Settings() {
         console.log("theme changed by settings")
         localStorage.setItem("theme", name);
         document.body.setAttribute("data-theme", name);
-        updateSettings({theme: name})
+        if(localStorage.getItem("access_token")) updateSettings({theme: name})
     }
 
     useEffect(() => {

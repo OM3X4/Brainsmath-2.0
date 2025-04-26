@@ -26,7 +26,7 @@ function Navbar() {
         <>
             <nav className="flex md:justify-between justify-around  items-center px-5 md:px-30 py-8">
                 <div className="flex justify-center items-center gap-4 md:gap-10">
-                    <Link href={'/'} prefetch={true}><h1 className="text-primary font-medium text-4xl cursor-pointer hidden xl:block">brainsmath</h1></Link>
+                    <Link href={'/'} prefetch={true}><h1 className="text-primary font-medium text-4xl cursor-pointer hidden md:block">brainsmath</h1></Link>
                     <Link href={'/'} prefetch={true}><PiMathOperationsBold className="text-2xl cursor-pointer text-gray hover:text-primary" /></Link>
                     <Link href={"/leaderboard"}><FaCrown className="text-2xl cursor-pointer text-gray  hover:text-primary" /></Link>
                     <Link href={"/settings"}><FaGear className="text-xl cursor-pointer text-gray  hover:text-primary" /></Link>
