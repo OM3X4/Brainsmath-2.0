@@ -6,6 +6,7 @@ import { useNotificationStore } from "../context/NotificationsContext";
 
 export const useSubmitTest = () => {
 
+    const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
     const { addNotification } = useNotificationStore();
 

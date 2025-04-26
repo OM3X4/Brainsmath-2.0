@@ -15,7 +15,7 @@ type ResultProps = {
 function Result({ resultData, TextFade, settings, resetTest }: ResultProps) {
     return (
         <div
-            className="h-[calc(100vh-300px)] w-full overflow-hidden flex items-center justify-center flex-col"
+            className="h-[calc(100vh-300px)] w-full overflow-hidden flex items-center justify-center flex-col" data-cy="resultScreen"
             style={{ opacity: TextFade ? 0 : 1 }}
         >
             <div className="flex flex-col lg:flex-row flex-wrap items-center justify-center gap-x-20 gap-y-5">

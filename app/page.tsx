@@ -191,7 +191,8 @@ function Home() {
                 difficulty: resultData.difficulty,
                 mode: resultData.mode == 'time' ? "time" : "questions"
             }
-            submitTest(serializedTest);
+            if(typeof window !== "undefined" &&localStorage.getItem("access_token")) submitTest(serializedTest);
+
         }
     }, [isResult])
 
@@ -211,21 +212,27 @@ function Home() {
                                     <div className='gap-3 text-sm text-gray bg-dark w-fit py-3 px-6 rounded-lg mx-auto mt-5 mb-5 hidden lg:flex'>
                                         <ul className='flex items-center justify-center gap-6'>
                                             <li className={`flex items-center justify-center gap-1 cursor-pointer hover:text-text font-semibold ${settings.type.includes("all") ? "text-primary" : "text-gray"}`}
+                                                data-cy="settingsbarAll"
                                                 onClick={e => changeSettingsType("all")}
                                             ><BiMath />all</li>
                                             <li className={`flex items-center justify-center gap-1 cursor-pointer hover:text-text font-semibold ${settings.type.includes("add") ? "text-primary" : "text-gray"}`}
+                                                data-cy="settingsbarAdd"
                                                 onClick={e => changeSettingsType("add")}
                                             ><CgMathPlus />add</li>
                                             <li className={`flex items-center justify-center gap-1 cursor-pointer hover:text-text font-semibold ${settings.type.includes("sub") ? "text-primary" : "text-gray"}`}
+                                                data-cy="settingsbarSub"
                                                 onClick={e => changeSettingsType("sub")}
                                             ><CgMathMinus />subtract</li>
                                             <li className={`flex items-center justify-center gap-1 cursor-pointer hover:text-text font-semibold ${settings.type.includes("multiply") ? "text-primary" : "text-gray"}`}
+                                                data-cy="settingsbarMultiply"
                                                 onClick={e => changeSettingsType("multiply")}
                                             ><FaTimes />multiply</li>
                                             <li className={`flex items-center justify-center gap-1 cursor-pointer hover:text-text font-semibold ${settings.type.includes("squares") ? "text-primary" : "text-gray"}`}
+                                                data-cy="settingsbarSquares"
                                                 onClick={e => changeSettingsType("squares")}
                                             ><TbCircleNumber2 />square</li>
                                             <li className={`flex items-center justify-center gap-1 cursor-pointer hover:text-text font-semibold ${settings.type.includes("root") ? "text-primary" : "text-gray"}`}
+                                                data-cy="settingsbarRoot"
                                                 onClick={e => changeSettingsType("root")}
                                             ><FaSquareRootAlt />root</li>
                                         </ul>
@@ -244,6 +251,7 @@ function Home() {
                                             {
                                                 (settings.isTime ? [30, 60, 120, 180] : [5, 10, 15, 25]).map((item, index) => (
                                                     <li className={`flex items-center justify-center gap-1 cursor-pointer hover:text-text font-semibold ${settings.number === item ? "text-primary" : "text-gray"}`}
+                                                        data-cy={`settingsbarNumber${item}`}
                                                         onClick={e => setSettings({ ...settings, number: item })}
                                                         key={index}>{item}</li>
                                                 ))
@@ -258,7 +266,7 @@ function Home() {
                                             <DialogTrigger className="w-full flex items-center justify-center my-2"><div className="bg-dark text-gray hover:bg-gray hover:text-dark w-fit flex items-center justify-center gap-2 rounded-2xl py-2 px-4"><FaGear />settings</div></DialogTrigger>
                                             <DialogContent>
                                                 <DialogClose
-                                                    onClick={e => resetTest()}><Button className="bg-error">Close</Button></DialogClose>
+                                                    onClick={e => resetTest()}><div className="bg-error w-[20%] mx-auto rounded-2xl text-white font-bold">Close</div></DialogClose>
                                                 <div>
                                                     <div className={`w-full text-center my-1 py-1 font-medium rounded-2xl ${settings.type.includes("all") ? "bg-primary text-gray" : "text-reverse bg-dark"}`}
                                                         onClick={e => changeSettingsType("all")}>all</div>
@@ -308,7 +316,7 @@ function Home() {
                                 </div>
                         }
                         {/* Numbers and math */}
-                        <div className="relative h-[25vh]  lg:h-[calc(100vh-400px)] w-full overflow-hidden flex items-center justify-center"
+                        <div className="relative h-[30vh]  lg:h-[calc(100vh-400px)] w-full overflow-hidden flex items-center justify-center"
                             style={{ opacity: TextFade ? 0 : 1 }}>
 
                             <div
@@ -342,16 +350,17 @@ function Home() {
                                         <div
                                             key={index}
                                             className={`w-[400px] mx-5 flex flex-col items-center justify-center transition-all duration-400 ease-in-out origin-center flex-shrink-0 flex-grow-0 ${opacityClass} ${scaleClass} ${zIndexClass}`}
+                                            data-cy="question" tabIndex={0}
                                         >
                                             <div className="flex flex-col items-center w-full">
-                                                <h1 className={`${distance === 0 ? "text-primary text-4xl  md:text-8xl" : "text-gray text-xl md:3xl lg:text-5xl"} font-bold mb-10 text-center `}>
+                                                <h1 className={`${distance === 0 ? "text-primary text-4xl  lg:text-8xl" : "text-gray text-xl lg:3xl lg:text-5xl"} font-bold mb-10 text-center `}>
                                                     {question.question}
                                                 </h1>
                                                 {/* Nested Ternary Operator one to determine is question is right or wrong(inner) and the outter to determine if the question is the current one */}
-                                                <div className={`${distance === 0 ? "text-white text-5xl md:text-9xl" : tracker[index] ? "text-primary text-4xl" : "text-error text-4xl"} text-center mb-5 font-bold`}>
+                                                <div className={`${distance === 0 ? "text-white text-5xl lg:text-9xl" : tracker[index] ? "text-primary text-4xl" : "text-error text-4xl"} text-center mb-5 font-bold`}>
                                                     {answers[index]}
                                                 </div>
-                                                <div className={`h-1 ${distance === 0 ? "bg-primary w-1/3 md:w-2/3" : "bg-gray w1/5 w-1/3"}`}></div>
+                                                <div className={`h-1 ${distance === 0 ? "bg-primary w-1/3 lg:w-2/3" : "bg-gray w1/5 w-1/3"}`}></div>
                                             </div>
                                         </div>
 
