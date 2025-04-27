@@ -47,7 +47,8 @@ function Result({ resultData, TextFade, settings, resetTest }: ResultProps) {
                 </div>
             </div>
 
-            <div className="text-white text-5xl absolute bottom-20 left-1/2 -translate-x-1/2">
+            <div className="text-white text-5xl absolute bottom-20 left-1/2 -translate-x-1/2"
+                data-cy="refreshButtonResult">
                 <MdOutlineRefresh
                     className="cursor-pointer hover:text-primary"
                     onClick={resetTest}
