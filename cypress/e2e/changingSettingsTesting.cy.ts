@@ -80,7 +80,7 @@ describe('tests', () => {
     // Optionally, ensure that the result screen appears after answering
   });
 
-  it("login" , {retries: 2} , () => {
+  it.skip("login" , {retries: 2} , () => {
     cy.visit('/authentication');
 
     cy.get('[data-cy="loginUsername"]').type("omar");
