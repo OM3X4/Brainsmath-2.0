@@ -79,9 +79,11 @@ export function generateRandomQuestions(types: QuestionType[] = ['all'], numQues
             squareMin: 0,
             squareMax: difficulties[4].squareMax,
         }];
+
+         difficulty = 1;
     }
 
-    difficulty = 1
+    
 
 
 
