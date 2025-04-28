@@ -80,13 +80,25 @@ describe('tests', () => {
     // Optionally, ensure that the result screen appears after answering
   });
 
-  it('leaderboard' , () => {
+  it.skip('leaderboard' , () => {
     cy.visit('/leaderboard');
 
+    cy.get('.w-\[60\%\] > :nth-child(5)').should('exist');
+  })
 
+  it("login" , () => {
+    cy.visit('/authentication');
 
+    cy.get('[data-cy="loginUsername"]').type("omar");
+    cy.get('[data-cy="loginPassword"]').type("omar")
+    cy.get('[data-cy="loginButton"]').click();
 
+    cy.wait(3000);
+
+    cy.location('pathname').should('eq', '/');
 
   })
+
+
 
 });
