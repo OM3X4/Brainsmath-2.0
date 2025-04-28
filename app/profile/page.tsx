@@ -1,4 +1,5 @@
 'use client'
+import { useEffect } from "react";
 // app/profile/[id]/page.tsx
 import useProfileFetcher from "../hooks/useProfileFetcher";
 import Loading from "../loading";
@@ -11,7 +12,13 @@ export default function ProfilePage() {
 
     const { data: userData, isLoading, isError } = useProfileFetcher();
 
+    useEffect(() => {
+        console.log("user data from profilepage" , userData)
+    } , [userData])
+
+
     if (isLoading) return <Loading />;
+
 
 
     return (
@@ -38,11 +45,11 @@ export default function ProfilePage() {
                     <div className="flex items-center justify-center gap-10">
                         <div>
                             <h1 className="text-sm text-gray ">Tests Started</h1>
-                            <h1 className="text-reverse text-4xl font-medium">68,890</h1>
+                            <h1 className="text-reverse text-4xl font-medium">-</h1>
                         </div>
                         <div>
                             <h1 className="text-sm text-gray ">Tests Completed</h1>
-                            <h1 className="text-reverse text-4xl font-medium">50,927</h1>
+                            <h1 className="text-reverse text-4xl font-medium">-</h1>
                         </div>
                     </div>
                 </div>
@@ -50,19 +57,19 @@ export default function ProfilePage() {
             <div className="w-[80%] mx-auto px-10 py-7 bg-dark rounded-2xl">
                 <div className="flex items-center justify-around text-reverse gap-5 px-10" >
                     {
-                        userData?.best_scores.questions.map((score: any, index: any) => (
+                        userData?.best_scores.questions.map((score: any, index: any) =>
                             <div key={index}>
                                 <p className="text-gray text-xs">{score.value} Questions</p>
-                                <h1 className=" text-primary text-5xl font-bold">{score.test.qpm}</h1>
+                                <h1 className=" text-primary text-5xl font-bold">{score.test ? (score.test.qpm).toFixed(0) : "-"}</h1>
                             </div>
-                        ))
+                        )
                     }
                     <div className="h-30 w-2 rounded-full bg-reverse"></div>
                     {
                         userData?.best_scores.time.map((score: any, index: any) => (
                             <div key={index}>
                                 <p className="text-gray text-xs">{score.value} s</p>
-                                <h1 className=" text-primary text-5xl font-bold">{score.test ? score.test.qpm : "-"}</h1>
+                                <h1 className=" text-primary text-5xl font-bold">{score.test ? (score.test.qpm).toFixed(0) : "-"}</h1>
                             </div>
                         ))
 
