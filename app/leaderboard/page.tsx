@@ -100,6 +100,7 @@ function Leaderboard() {
                     }
                     return (
                         <Entity
+                            data-cy="leaderboardentity"
                             key={index}
                             index={(currentPage * 50) - 50 + index} isOdd={index % 2 == 1}
                             username={item.username} time={item.time} qpm={item.qpm} accuracy={item.accuracy} raw={item.raw}

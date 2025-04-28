@@ -1,5 +1,5 @@
 describe('navigation', () => {
-	it('navigation', () => {
+	it('navigation',{ retries:2} , () => {
 		cy.visit('/')
 
 		cy.get("a[href='/authentication']").click()

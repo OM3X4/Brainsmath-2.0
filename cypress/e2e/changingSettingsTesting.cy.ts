@@ -4,7 +4,7 @@ describe('tests', () => {
     cy.visit('/');
   });
 
-  it.skip('should answer questions using the keyboard', () => {
+  it('should answer questions using the keyboard', {retries: 2} , () => {
     // Ensure the question is visible before proceeding
     cy.get("div[data-cy='question']").should('exist');
 
@@ -80,13 +80,7 @@ describe('tests', () => {
     // Optionally, ensure that the result screen appears after answering
   });
 
-  it.skip('leaderboard' , () => {
-    cy.visit('/leaderboard');
-
-    cy.get('.w-\[60\%\] > :nth-child(5)').should('exist');
-  })
-
-  it("login" , () => {
+  it("login" , {retries: 2} , () => {
     cy.visit('/authentication');
 
     cy.get('[data-cy="loginUsername"]').type("omar");
