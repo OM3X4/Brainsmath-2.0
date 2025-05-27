@@ -12,12 +12,9 @@ export default function ProfilePage() {
 
     const { data: userData, isLoading, isError } = useProfileFetcher();
 
-    useEffect(() => {
-        console.log("user data from profilepage" , userData)
-    } , [userData])
 
 
-    if (isLoading) return <Loading />;
+    if (isLoading || isError) return <Loading />;
 
 
 
@@ -39,22 +36,19 @@ export default function ProfilePage() {
                                 {daysSince(userData?.date_joined || "")} days ago
                             </div>
                         </div>
-                        <h2 className="text-gray text-xs cursor-pointer">current streak: {userData?.streak.user_streak} days</h2>
+                        <h2 className="text-gray text-xs cursor-pointer">current streak: {userData?.current_streak} days</h2>
                     </div>
                     <div className="w-1 h-18 rounded-full bg-background"></div>
                     <div className="flex items-center justify-center gap-10">
                         <div>
-                            <h1 className="text-sm text-gray ">Tests Started</h1>
-                            <h1 className="text-reverse text-4xl font-medium">-</h1>
-                        </div>
-                        <div>
                             <h1 className="text-sm text-gray ">Tests Completed</h1>
-                            <h1 className="text-reverse text-4xl font-medium">-</h1>
+                            <h1 className="text-reverse text-4xl font-medium">{userData?._count.core_test}</h1>
                         </div>
+
                     </div>
                 </div>
             </div>
-            <div className="w-[80%] mx-auto px-10 py-7 bg-dark rounded-2xl">
+            {/* <div className="w-[80%] mx-auto px-10 py-7 bg-dark rounded-2xl">
                 <div className="flex items-center justify-around text-reverse gap-5 px-10" >
                     {
                         userData?.best_scores.questions.map((score: any, index: any) =>
@@ -89,7 +83,7 @@ export default function ProfilePage() {
                         <h1 className="text-3xl font-bold">Not Qualified</h1>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </section>
     );
 }

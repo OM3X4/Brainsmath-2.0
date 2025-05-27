@@ -59,7 +59,6 @@ function Settings() {
     const [fade , setFade] = useState(true);
 
     const handleThemeChange = (name: string) => {
-        console.log("theme changed by settings")
         localStorage.setItem("theme", name);
         document.body.setAttribute("data-theme", name);
         if(localStorage.getItem("access_token")) updateSettings({theme: name})
@@ -101,7 +100,7 @@ function Settings() {
                         return (
                             <button className={`text-lg text-gray bg-text w-2/9 text-center px-3 py-2 rounded-md border cursor-pointer hover:border-white border-background`}
                             style={{ fontFamily: font.name == "helvetica" ? "Helvetica" : `var(--font-${font.name})` }}
-                            onClick={() => setFont(`var(--font-${font.name})`)}
+                            onClick={() => setFont(font.name)}
                             key={index}>
                                 {font.displayName}
                             </button>

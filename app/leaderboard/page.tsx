@@ -56,9 +56,6 @@ function Leaderboard() {
 
     }, [userData, leaderboardData , userRankData]);
 
-
-
-
     const userPage = () => setCurrentPage(Math.ceil(userRankData.index / 50))
     const goToFirstPage = () => setCurrentPage(1);
     const goToNextPage = () => setCurrentPage((prev) => {
@@ -72,7 +69,7 @@ function Leaderboard() {
 
     return (
         <div className='w-[60%] mx-auto mt-5'>
-            <h1 className='text-reverse text-3xl font-bold my-8'>All-Time difficulty 5 60s Leaderboard</h1>
+            <h1 className='text-reverse text-3xl font-bold my-8'>All-Time Leaderboard</h1>
             {
                 userData &&
                     userRankData ? <Entity index={userRankData.index - 1} username={userRankData.username} time={userRankData.time} qpm={userRankData.qpm} accuracy={userRankData.accuracy} raw={userRankData.raw} creation={userRankData.creation} isMe={true} /> : <div className='w-full my-5 rounded-2xl bg-dark  text-2xl py-4  h-fit text-center text-gray'>Not Qualified</div>
@@ -92,7 +89,7 @@ function Leaderboard() {
             <Entity index="#" username="username" time="time" qpm="qpm" accuracy="accuracy" raw="raw" creation="date" isHeader={true}
                 className='mt-5' />
             {
-                leaderboardData.results?.map((item: any, index: number) => {
+                leaderboardData?.map((item: any, index: number) => {
                     if (userData && item.username == userData.username) {
                         return <Entity key={index} index={index} username={item.username} isOdd={index % 2 == 1}
                             time={item.time} qpm={item.qpm} accuracy={item.accuracy} raw={item.raw} creation={item.creation}

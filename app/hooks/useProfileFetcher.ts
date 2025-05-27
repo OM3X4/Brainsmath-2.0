@@ -61,8 +61,10 @@ type UserData = {
 
 
 export default function useProfileFetcher() {
+
+
     const accessToken = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
-    const query =  useQuery<UserData>({
+    const query =  useQuery<any>({
         queryKey: ["userData"],
         queryFn: fetchProfile,
         staleTime: 60000 * 60,
@@ -71,12 +73,11 @@ export default function useProfileFetcher() {
     })
 
     React.useEffect(() => {
-        console.log(query.isSuccess , query.data)
         if(query.isSuccess){
-            console.log("theme changed by query");
-            document.body.setAttribute("data-theme", query.data.theme);
-            localStorage.setItem("theme", query.data.theme)
-            localStorage.setItem("font", query.data.font)
+            document.body.setAttribute("data-theme", (query.data as any).core_settings.theme);
+            document.body.style.fontFamily = `var(--font-${(query.data as any).core_settings.font})`;
+            localStorage.setItem("theme", (query.data as any).core_settings.theme)
+            localStorage.setItem("font", `var(--font-${(query.data as any).core_settings.font})`)
         }
     } , [query.isSuccess , query.data])
 

@@ -39,7 +39,7 @@ function Navbar() {
                             <p className="text-gray hover:text-white  text-md cursor-pointer">{userData ? userData.username : "Sign In"}</p>
                         </div>
                     </Link>
-                    {userData ? <div onClick={() => {localStorage.clear();queryClient.setQueryData(['user'], null);window.location.href ='/authentication'}}><button className="text-white hover:text-primary cursor-pointer text-2xl mt-2"><MdLogout /></button></div> : ""}
+                    {userData ? <div onClick={() => {localStorage.clear();queryClient.setQueryData(['user'], null);window.location.href ='/authentication'}}><button className="text-text hover:text-primary cursor-pointer text-2xl mt-2"><MdLogout /></button></div> : ""}
                 </div>
             </nav>
         </>
